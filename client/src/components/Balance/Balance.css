@@ -1,0 +1,13 @@
+.balance {
+    background: var(--positive-background);
+    color: var(--positive-text);
+    text-align: center;
+    font-size: 5vh;
+    font-weight: bold;
+    padding: 2vh;
+}
+
+.balance.negative {
+    background: var(--negative-background);
+    color: var(--negative-text);
+}

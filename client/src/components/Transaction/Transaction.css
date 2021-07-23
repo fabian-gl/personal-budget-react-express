@@ -1,0 +1,51 @@
+.cont-transaction {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 8vh;
+    background: rgb(235, 235, 235);
+    margin: 1vh 0;
+}
+
+.cont-transaction > div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.cont-transaction .cont-img {
+    align-self: flex-start;
+    padding: 1vh;
+}
+
+.cont-transaction .cont-img  img{
+    height: 100%;
+}
+
+.cont-transaction .cont-name {
+    flex: 1;
+}
+
+.cont-transaction .cont-amount {
+    align-self: flex-end;
+    margin: 0 1vh;
+}
+
+.cont-transaction .cont-amount div {
+    font-weight: bold;
+    line-height: 1;
+    padding: 0.25em 1em;
+    background: lightgrey;
+    border-radius: 1em;
+    text-align: right;
+}
+
+.cont-transaction .cont-amount .income {
+    background: var(--positive-background);
+    color: var(--positive-text);
+}
+
+.cont-transaction .cont-amount .outcome {
+    background: var(--negative-background);
+    color: var(--negative-text);
+}
