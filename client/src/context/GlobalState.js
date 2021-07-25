@@ -1,12 +1,10 @@
 import React, { createContext, useReducer } from 'react'
 import AppReducer from './AppReducer'
+import { getSummaryInformationCall } from '../serverCalls'
+
 
 const initialState = {
-    transactions: [
-        {id: 1, name: 'Veggies', amount: '-500.25', type: 'outcome'},
-        {id: 2, name: 'Lawn the mown', amount: '1000', type: 'income'},
-        {id: 3, name: 'Lemonade', amount: '-200', type: 'outcome'},
-    ],
+    transactions: [],
     balance: -10
 }
 
@@ -15,10 +13,18 @@ export const GlobalContext = createContext(initialState)
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+    const getSummaryInformation = async () => {
+        const response = await getSummaryInformationCall()
+        dispatch({
+            type: 'GET_SUMMARY_INFORMATION',
+            data: response
+          });
+    }
     return (
         <GlobalContext.Provider value={{
             transactions: state.transactions,
-            balance: state.balance
+            balance: state.balance,
+            getSummaryInformation,
         }}>
             {children}    
         </GlobalContext.Provider>

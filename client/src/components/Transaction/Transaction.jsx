@@ -6,7 +6,8 @@ import { formatAmount } from '../../utils'
 
 const transaction = ({name, amount, type}) => {
     const formattedAmount = formatAmount(amount)
-    const iconToShow = (type === 'income' ? moneyIn : moneyOut)
+    const iconToShow = (type === 1 ? moneyIn : moneyOut)
+    const className = (type === 1 ? 'income' : 'outcome')
 
     return (
         <div className='cont-transaction'>
@@ -17,7 +18,7 @@ const transaction = ({name, amount, type}) => {
                 <div>{name}</div>
             </div>
             <div className="cont-amount">
-                <div className={type}>{formattedAmount}</div>
+                <div className={className}>{formattedAmount}</div>
             </div>
         </div>
     )

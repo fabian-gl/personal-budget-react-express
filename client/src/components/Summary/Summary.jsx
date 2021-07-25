@@ -1,9 +1,15 @@
 import './Summary.css'
 import TransactionList from "../TransactionList/TransactionList";
-import TitledContainer from '../TitledContainer/TitledContainer';
 import Balance from '../Balance/Balance';
+import { useEffect, useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalState'
 
 const Summary = () => {
+    const { getSummaryInformation } = useContext(GlobalContext);
+    useEffect( () => {
+        getSummaryInformation()
+    }, [])
+
     return (
         <div className='cont-summary'>
             <h1>Summary</h1>
