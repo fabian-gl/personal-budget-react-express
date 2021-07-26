@@ -56,7 +56,7 @@
 
 
 /* Media queries */
- @media (max-width: 600px) {
+ @media (max-width: 800px) {
     .cont-navbar .cont-buttons { display: none; }
     .cont-navbar .cont-hamburger { display: flex; }
     .cont-navbar .menu-cellphone { display: flex; }

@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom'
 
 const Logo = () => {
     return (
-        <div className='cont-logo'>
-            <img src={logoImg} alt="Finance Company Logo" />
-            <Link className='link-element' to='/'>
+        <Link className='link-element' to='/'>
+            <div className='cont-logo'>
+                <img src={logoImg} alt="Finance Company Logo" />
                 <h2>My Budget</h2>
-            </Link>
-        </div>
+            </div>
+        </Link>
     )
 }
 

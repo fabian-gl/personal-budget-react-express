@@ -27,7 +27,6 @@ const NavBar = () => {
                         <div className="menu-wrap">
                             <input onClick={toggleMenuCelu} type="checkbox" className="toggler" />
                             <div className="hamburger"><div></div></div>
-
                         </div>
                     </div>
 

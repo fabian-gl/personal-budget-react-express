@@ -8,6 +8,7 @@
     transition: transform 0.3s ease-in;
     transform: scale(1);
     font-size: 3.5vh;
+    text-align: center;
 }
 
 .navbar-button:hover {
@@ -15,11 +16,7 @@
     transition: transform 0.3s ease-in;
 }
 
-.link-element,
-.link-element:visited,
-.link-element:active,
-.link-element:link
- {
-    text-decoration: none;
-    color: inherit;
+.navbar-button .link-element.selected {
+    color: rgb(51, 51, 255);
+    font-weight: bold;
 }
