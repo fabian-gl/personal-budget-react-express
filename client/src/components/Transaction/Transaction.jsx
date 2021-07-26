@@ -1,24 +1,24 @@
 import './Transaction.css'
 import moneyIn from '../../assets/money-in.png'
 import moneyOut from '../../assets/money-out.png'
-import { formatAmount } from '../../utils'
+import { formatAmount, formatDate } from '../../utils'
 
 
-const transaction = ({name, amount, type}) => {
-    const formattedAmount = formatAmount(amount)
+const transaction = ({name, amount, type, date}) => {
     const iconToShow = (type === 1 ? moneyIn : moneyOut)
     const className = (type === 1 ? 'income' : 'outcome')
 
     return (
         <div className='cont-transaction'>
-            <div className="cont-img">
+            <div className="cont-left">
                 <img src={iconToShow} alt="" />
             </div>
-            <div className="cont-name">
-                <div>{name}</div>
+            <div className="cont-middle">
+                <div className='name'>{name}</div>
+                <div className='date'>{formatDate(date)}</div>
             </div>
-            <div className="cont-amount">
-                <div className={className}>{formattedAmount}</div>
+            <div className="cont-right">
+                <div className={className}>{formatAmount(amount)}</div>
             </div>
         </div>
     )

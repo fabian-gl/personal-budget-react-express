@@ -1,3 +1,7 @@
+export const formatDate = date => {
+    return date.split('T')[0]
+}
+
 export const formatAmount = amount => {
     const absoluteAmount = Math.abs(Number(amount))
     const preffixMinus = (isNegative(amount) ? '-' : '')

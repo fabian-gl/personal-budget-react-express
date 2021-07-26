@@ -4,7 +4,11 @@ import NavBarItem from '../NavBarItem/NavBarItem'
 import Logo from '../Logo/Logo'
 
 const NavBar = () => {
-    const menu = ['Summary', 'Add or Edit Transaction']
+    // const menu = ['Summary', 'Add or Edit Transaction']
+    const menu = [
+        {name: 'Summary', route: '/'},
+        {name: 'Add or Edit Transaction', route: '/crud'}
+    ]
 
     const toggleMenuCelu = () => document.querySelector('.menu-cellphone').classList.toggle('hidden')
 
@@ -17,7 +21,7 @@ const NavBar = () => {
                 </div>
                 <div className="cont-middle">
                     <div className="cont-buttons">
-                        { menu.map((elem, index) => <NavBarItem nombre={elem} key={index}/>) }
+                        { menu.map((elem, index) => <NavBarItem {...elem} key={index}/>) }
                     </div>
                     <div className="cont-hamburger">
                         <div className="menu-wrap">
@@ -32,7 +36,7 @@ const NavBar = () => {
             </div>
             <div>
                 <div className="menu-cellphone hidden">
-                    { menu.map((elem, index) => <NavBarItem nombre={elem} key={index}/>) }
+                    { menu.map((elem, index) => <NavBarItem {...elem} key={index}/>) }
                 </div>
             </div>
             

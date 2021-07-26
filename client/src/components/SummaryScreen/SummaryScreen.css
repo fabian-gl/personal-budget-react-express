@@ -1,0 +1,29 @@
+.cont-summary {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3vh;
+}
+
+.cont-summary .cont-balance {
+    width: 30vw;
+    margin-bottom: 2vh;
+}
+
+@media (max-width: 1000px) {
+    .cont-summary .cont-balance {width: 40vw;}
+}
+
+@media (max-width: 800px) {
+    .cont-summary .cont-balance {width: 50vw;}
+}
+
+@media (max-width: 650px) {
+    .cont-summary .cont-balance {width: 70vw;}
+}
+
+.cont-summary .cont-transaction-list {
+    width: 100%;
+}

@@ -1,4 +1,4 @@
-.cont-summary {
+.cont-crud {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -7,12 +7,6 @@
     padding: 3vh;
 }
 
-.cont-summary .cont-balance {
-    width: 10%;
-    min-width: 20vw;
-    margin-bottom: 2vh;
-}
-
-.cont-summary .cont-transaction-list {
+.cont-crud .cont-transaction-list {
     width: 100%;
 }

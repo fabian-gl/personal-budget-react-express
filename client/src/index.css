@@ -35,6 +35,13 @@ body {
   justify-content: center;
 }
 
+@media (max-width: 800px) {
+  .cont-app {width: 80vw;}
+}
+
+@media (max-width: 650px) {
+  .cont-app {width: 100vw;}
+}
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {

@@ -7,6 +7,7 @@ const AppReducer = (state, action) => {
                 ...state,
                 loading: true
             }
+            
         case 'GET_SUMMARY_INFORMATION':
             return {
                 ...state,
@@ -14,6 +15,13 @@ const AppReducer = (state, action) => {
                 balance: action.data.balance,
                 loading: false
             }
+        case 'GET_ALL_TRANSACTIONS':
+            return {
+                ...state,
+                transactions: action.data.transactions,
+                loading: false
+            }
+
         default: return state
     }
 }

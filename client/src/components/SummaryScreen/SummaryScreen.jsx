@@ -1,11 +1,12 @@
-import './Summary.css'
+import './SummaryScreen.css'
+
 import TransactionList from "../TransactionList/TransactionList";
 import Balance from '../Balance/Balance';
 import { useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState'
 
-const Summary = () => {
-    const { getSummaryInformation } = useContext(GlobalContext);
+const SummaryScreen = () => {
+    const { getSummaryInformation, latestTransactions, balance } = useContext(GlobalContext);
     useEffect( () => {
         getSummaryInformation()
     }, [])
@@ -13,13 +14,13 @@ const Summary = () => {
     return (
         <div className='cont-summary'>
             <div className="cont-balance">
-                <Balance />
+                <Balance balance={balance} />
             </div>
             <div className="cont-transaction-list">
-                <TransactionList />
+                <TransactionList title={'Latest transactions'} transactions={latestTransactions} />
             </div>
         </div>
     )
 }
 
-export default Summary
+export default SummaryScreen

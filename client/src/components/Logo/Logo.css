@@ -17,3 +17,12 @@
     font-size: 3.5vh;
     margin-right: 2vh;
 }
+
+.link-element,
+.link-element:visited,
+.link-element:active,
+.link-element:link
+ {
+    text-decoration: none;
+    color: inherit;
+}

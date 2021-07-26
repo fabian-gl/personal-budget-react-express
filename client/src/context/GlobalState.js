@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import AppReducer from './AppReducer'
-import { getSummaryInformationCall } from '../serverCalls'
+import { getSummaryInformationCall, getTransactionsCall } from '../serverCalls'
 
 
 const initialState = {
@@ -28,6 +28,21 @@ export const GlobalProvider = ({children}) => {
             data: response
           })
     }
+
+    const getAllTransactions = async () => {
+
+        dispatch({
+            type: 'SET_LOADING_TRUE'
+          })
+
+        const response = await getTransactionsCall()
+
+        dispatch({
+            type: 'GET_ALL_TRANSACTIONS',
+            data: response
+          })
+    }
+
     return (
         <GlobalContext.Provider value={{
             latestTransactions: state.latestTransactions,
@@ -35,6 +50,7 @@ export const GlobalProvider = ({children}) => {
             balance: state.balance,
             loading: state.loading,
             getSummaryInformation,
+            getAllTransactions,
         }}>
             {children}    
         </GlobalContext.Provider>

@@ -13,25 +13,38 @@
     align-items: center;
 }
 
-.cont-transaction .cont-img {
+.cont-transaction .cont-left {
     align-self: flex-start;
     padding: 1vh;
 }
 
-.cont-transaction .cont-img  img{
+.cont-transaction .cont-left  img{
     height: 100%;
 }
 
-.cont-transaction .cont-name {
+.cont-transaction .cont-middle {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-.cont-transaction .cont-amount {
+.cont-transaction .cont-middle .name {
+    font-size: 3vh;
+}
+
+.cont-transaction .cont-middle .date {
+    color: rgb(134, 134, 134);
+    font-size: 2vh;
+}
+
+.cont-transaction .cont-right {
     align-self: flex-end;
     margin: 0 1vh;
 }
 
-.cont-transaction .cont-amount div {
+.cont-transaction .cont-right div {
     font-weight: bold;
     line-height: 1;
     padding: 0.25em 1em;
@@ -40,12 +53,12 @@
     text-align: right;
 }
 
-.cont-transaction .cont-amount .income {
+.cont-transaction .cont-right .income {
     background: var(--positive-background);
     color: var(--positive-text);
 }
 
-.cont-transaction .cont-amount .outcome {
+.cont-transaction .cont-right .outcome {
     background: var(--negative-background);
     color: var(--negative-text);
 }
