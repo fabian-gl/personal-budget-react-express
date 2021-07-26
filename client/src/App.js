@@ -1,11 +1,12 @@
-import Summary from "./components/Summary/Summary";
 import { GlobalProvider } from "./context/GlobalState";
+import Summary from "./components/Summary/Summary";
+import NavBar from './components/NavBar/NavBar'
 
 function App() {
   return (
     <GlobalProvider>
       <div className='cont-app'>
-        <h1>My Budget Manager</h1>
+        <NavBar />
         <Summary />
       </div>
     </GlobalProvider>

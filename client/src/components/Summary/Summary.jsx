@@ -12,7 +12,6 @@ const Summary = () => {
 
     return (
         <div className='cont-summary'>
-            <h1>Summary</h1>
             <div className="cont-balance">
                 <Balance />
             </div>

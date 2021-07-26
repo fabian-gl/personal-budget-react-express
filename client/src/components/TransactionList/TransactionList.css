@@ -1,3 +1,5 @@
 .transaction-list {
     padding: 1vh 2vh;
+    max-height: 55vh;
+    overflow-y: scroll;
 }

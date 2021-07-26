@@ -5,11 +5,11 @@ import Transaction from '../Transaction/Transaction'
 import TitledContainer from '../TitledContainer/TitledContainer'
 
 const TransactionList = () => {
-    const {transactions} = useContext(GlobalContext)
+    const {latestTransactions} = useContext(GlobalContext)
     return (
         <TitledContainer title='Latest transactions'>
             <div className="transaction-list">
-                {transactions.map(transaction => <Transaction key={transaction.id} {...transaction} />)}
+                {latestTransactions.map(transaction => <Transaction key={transaction.id} {...transaction} />)}
             </div>
         </TitledContainer>
     )
