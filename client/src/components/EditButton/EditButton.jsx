@@ -1,11 +1,8 @@
 import './EditButton.css'
 
-const EditButton = ({id}) => {
-    const handleClick = () => {
-        console.log(id)
-    }
+const EditButton = ({onEditClick}) => {
     return (
-        <div className='cont-edit-button' onClick={handleClick}>
+        <div className='cont-edit-button' onClick={onEditClick}>
             &#x2807;
         </div>
     )

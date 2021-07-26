@@ -7,13 +7,28 @@ const initialState = {
     latestTransactions: [],
     transactions: [],
     balance: 0,
-    loading: false
+    loading: false,
+    showingModal: false,
+    idToEdit: undefined
 }
 
 export const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const showModal = id => {
+        dispatch({
+            type: 'SHOW_MODAL',
+            id: id
+          })
+    }
+
+    const hideModal = id => {
+        dispatch({
+            type: 'HIDE_MODAL'
+          })
+    }
 
     const getSummaryInformation = async () => {
 
@@ -49,6 +64,10 @@ export const GlobalProvider = ({children}) => {
             transactions: state.transactions,
             balance: state.balance,
             loading: state.loading,
+            showingModal: state.showingModal,
+            idToEdit: state.idToEdit,
+            showModal,
+            hideModal,
             getSummaryInformation,
             getAllTransactions,
         }}>

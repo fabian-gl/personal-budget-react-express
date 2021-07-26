@@ -2,6 +2,20 @@
 const AppReducer = (state, action) => {
     switch(action.type)
     {
+        case 'SHOW_MODAL':
+            return {
+                ...state,
+                idToEdit: action.id,
+                showingModal: true
+            }
+
+        case 'HIDE_MODAL':
+            return {
+                ...state,
+                idToEdit: undefined,
+                showingModal: false
+            }   
+                     
         case 'SET_LOADING_TRUE':
             return {
                 ...state,
@@ -15,6 +29,7 @@ const AppReducer = (state, action) => {
                 balance: action.data.balance,
                 loading: false
             }
+
         case 'GET_ALL_TRANSACTIONS':
             return {
                 ...state,

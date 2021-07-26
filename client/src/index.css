@@ -33,14 +33,21 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 3vh;
 }
 
 @media (max-width: 800px) {
-  .cont-app {width: 80vw;}
+  .cont-app {
+    width: 80vw;
+    padding: 1.5vh;
+  }
 }
 
 @media (max-width: 650px) {
-  .cont-app {width: 100vw;}
+  .cont-app {
+    width: 100vw;
+    padding: 0.5vh;
+  }
 }
 
 /* Scrollbar styles */

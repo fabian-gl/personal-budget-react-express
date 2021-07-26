@@ -1,0 +1,49 @@
+.cont-modal {
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    background: green;
+    display: flex;
+    flex-direction: column;
+}
+
+.cont-modal .cont-header {
+    width: 100%;
+    background: blue;
+    height: 7vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cont-modal .cont-header .cont-title {
+    display: flex;
+    align-items: center;
+    font-size: 5vh;
+}
+
+.cont-modal .cont-header .cont-close {
+    display: flex;
+    align-items: center;
+    font-size: 4vh;
+    cursor: pointer;
+    margin-right: 2vh;
+    transition: transform 0.3s;
+    transform: rotate(0);
+}
+
+.cont-modal .cont-header .cont-close:hover {
+    transition: transform 0.3s;
+    transform: rotate(90deg)
+}
+
+.cont-modal .cont-transaction-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.cont-modal .cont-transaction-info button {
+    padding: 0.25em 0.5em;
+}
