@@ -15,12 +15,18 @@ const AppReducer = (state, action) => {
                 idToEdit: undefined,
                 showingModal: false
             }   
-                     
+
         case 'SET_LOADING_TRUE':
             return {
                 ...state,
                 loading: true
             }
+            
+        case 'DELETE_TRANSACTION':
+            return {
+                ...state,
+
+            }            
             
         case 'GET_SUMMARY_INFORMATION':
             return {

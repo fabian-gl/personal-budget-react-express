@@ -5,7 +5,7 @@ import { GlobalContext } from '../../context/GlobalState'
 import { formatDate } from '../../utils'
 
 const EditModal = () => {
-    const { hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
+    const { deleteTransaction, hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
 
     const [currentTransaction, setCurrentTransaction] = useState((idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {}))
     
@@ -13,12 +13,16 @@ const EditModal = () => {
     console.log(currentTransaction)
     console.log(transactions)
 
+    const handleDeleteClick = () => {
+        deleteTransaction(idToEdit)
+    }
+    
     let modalTitle, submitButtonTitle, deleteTransactionElement
     if (idToEdit)
     {
         modalTitle = 'Edit or delete transaction'
         submitButtonTitle = 'Update transaction information'
-        deleteTransactionElement = <button>Delete transaction</button>
+        deleteTransactionElement = <button onClick={handleDeleteClick}>Delete transaction</button>
     }
     else
     {
