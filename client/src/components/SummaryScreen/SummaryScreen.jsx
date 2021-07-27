@@ -6,9 +6,10 @@ import { useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState'
 
 const SummaryScreen = () => {
-    const { getSummaryInformation, latestTransactions, balance } = useContext(GlobalContext);
+    const { getSummaryInformation, latestTransactions, balance, loading } = useContext(GlobalContext);
     useEffect( () => {
         getSummaryInformation()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -17,7 +18,7 @@ const SummaryScreen = () => {
                 <Balance balance={balance} />
             </div>
             <div className="cont-transaction-list">
-                <TransactionList title={'Latest transactions'} transactions={latestTransactions} />
+                <TransactionList loading={loading} title={'Latest transactions'} transactions={latestTransactions} />
             </div>
         </div>
     )

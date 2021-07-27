@@ -10,7 +10,6 @@ export const formatAmount = amount => {
 
 export const isNegative = amount => Number(amount) < 0
 
-
 export const ajaxCall = (url, method, objParams) => {
     return new Promise ((resolve, reject) => {
         const xhttp = new XMLHttpRequest()

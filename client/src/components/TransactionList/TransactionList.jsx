@@ -2,13 +2,15 @@ import './TransactionList.css'
 
 import TitledContainer from '../TitledContainer/TitledContainer'
 import Transaction from '../Transaction/Transaction'
+import Spinner from '../Spinner/Spinner'
 
-const TransactionList = ({ transactions, title, editable = false }) => {
+const TransactionList = ({ transactions, title, editable=false, loading=false }) => {
 
     return (
         <TitledContainer title={title}>
             <div className="transaction-list">
-                {transactions.map(transaction => <Transaction editable={editable} key={transaction.id} {...transaction} />)}
+                {loading && <Spinner />}
+                {!loading && transactions.map(transaction => <Transaction editable={editable} key={transaction.id} {...transaction} />)}
             </div>
         </TitledContainer>
     )

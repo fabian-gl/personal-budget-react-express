@@ -7,7 +7,7 @@ import TransactionFilters from '../TransactionFilters/TransactionFilters';
 import EditModal from '../EditModal/EditModal';
 
 const CRUDScreen = () => {
-    const { showingModal, getAllTransactions, transactions } = useContext(GlobalContext);
+    const { showingModal, getAllTransactions, transactions, loading } = useContext(GlobalContext);
     
     useEffect( () => {
         getAllTransactions()
@@ -24,11 +24,9 @@ const CRUDScreen = () => {
     return (
         <div className='cont-crud'>
             {modal}
-            <h1>CRUD Screen</h1>
             <TransactionFilters onFiltersChange={onFiltersChange} />
-            
             <div className="cont-transaction-list">
-                <TransactionList editable={true} title={'Transactions'} transactions={transactions.filter(transaction => filtersArray.includes(transaction.type))} />
+                <TransactionList loading={loading} editable={true} title={'Transactions'} transactions={transactions.filter(transaction => filtersArray.includes(transaction.type))} />
             </div>
         </div>
     )

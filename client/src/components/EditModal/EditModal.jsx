@@ -7,14 +7,28 @@ import { formatDate } from '../../utils'
 const EditModal = () => {
     const { deleteTransaction, hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
 
-    const [currentTransaction, setCurrentTransaction] = useState((idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {}))
+    const currentTransaction = (idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {})
     
-    console.log(idToEdit)
-    console.log(currentTransaction)
-    console.log(transactions)
+    const [transactionName, setTransactionName] = useState(currentTransaction.name)
+    const [transactionAmount, setTransactionAmount] = useState(currentTransaction.amount)
+    const [transactionDate, setTransactionDate] = useState(currentTransaction.date)
+    const [transactionType, setTransactionType] = useState(currentTransaction.type)
 
-    const handleDeleteClick = () => {
-        deleteTransaction(idToEdit)
+
+    const handleNameChange = (e) => {
+        setTransactionName(e.target.value)
+    }
+    const handleAmountChange = (e) => {
+        setTransactionAmount(e.target.value)
+    }
+    const handleDateChange = (e) => {
+        setTransactionDate(e.target.value)
+    }
+
+    const handleDeleteClick = async () => {
+        await deleteTransaction(idToEdit)
+        getAllTransactions()
+        hideModal()
     }
     
     let modalTitle, submitButtonTitle, deleteTransactionElement
@@ -45,13 +59,19 @@ const EditModal = () => {
                 {deleteTransactionElement}
                 
                 <label htmlFor="transactionName">Transaction Name:</label>
-                <input type="text" name='transactionName' value={currentTransaction.name} />
+                <input type="text" name='transactionName' 
+                value={transactionName} 
+                onChange={handleNameChange}/>
                 
                 <label htmlFor="transactionAmount">Transaction Amount:</label>
-                <input type="text" name='transactionAmount' value={currentTransaction.amount} />
+                <input type="text" name='transactionAmount' 
+                value={transactionAmount} 
+                onChange={handleAmountChange}/>
                 
                 <label htmlFor="transactionDate">Transaction Date:</label>
-                <input type="date" name='transactionDate' value={formatDate(currentTransaction.date)} />
+                <input type="date" name='transactionDate' 
+                value={formatDate(transactionDate)} 
+                onChange={handleDateChange}/>
                 
                 <div className="cont-submit">
                     <button>{submitButtonTitle}</button>
