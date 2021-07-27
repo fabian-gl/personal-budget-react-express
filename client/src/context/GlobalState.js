@@ -32,7 +32,7 @@ export const GlobalProvider = ({children}) => {
 
     const deleteTransaction = async id => {
 
-        const response = await deleteTransactionCall()
+        const response = await deleteTransactionCall(id)
 
         console.log(response)
 
