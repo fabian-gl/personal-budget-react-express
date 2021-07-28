@@ -1,6 +1,47 @@
 const { getDbConnection } = require('../config/db')
 
 
+const prepareUpdateQuery = (params) => {
+
+    const {id, ...updatableParams} = params 
+    let setClause = ''
+
+    console.log(updatableParams)
+    for (const key in updatableParams){
+        if (updatableParams[key]) 
+            setClause += `${(setClause === '' ? '' : ', ')}${key} = '${updatableParams[key]}'`
+    }
+
+    return `UPDATE transactions SET ${setClause} WHERE id = ${id}`
+}
+
+// get latest transactions and balance
+// route: GET base_url/api/v1/transactions
+exports.updateTransaction = (req, res, next) => {
+
+    const possibleParams = {
+        id: req.body.id,
+        name: req.body.name,
+        amount: req.body.amount,
+        type: req.body.type,
+        date: req.body.date
+    }
+
+    const query = prepareUpdateQuery(possibleParams)
+
+    // res.status(200).json({result: 'result', possibleParams, query})
+    // return
+    queryPromise(query)
+    .then(result => {
+        res.status(200).json({result: result})
+    })
+    .catch(err => {
+        res.status(500).json({message: `Couldn't delete transaction: ${err}`})
+    })
+
+}
+
+
 // get latest transactions and balance
 // route: GET base_url/api/v1/transactions
 exports.addTransaction = (req, res, next) => {

@@ -5,7 +5,7 @@ import { GlobalContext } from '../../context/GlobalState'
 import { formatDate } from '../../utils'
 
 const EditModal = () => {
-    const { deleteTransaction, hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
+    const { updateTransaction, deleteTransaction, hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
 
     const currentTransaction = (idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {})
     
@@ -27,7 +27,11 @@ const EditModal = () => {
 
     const handleDeleteClick = async () => {
         await deleteTransaction(idToEdit)
-        getAllTransactions()
+        hideModal()
+    }
+
+    const handleUpdateClick = async () => {
+        await updateTransaction(idToEdit, transactionName, transactionAmount, transactionDate)
         hideModal()
     }
     
@@ -74,7 +78,7 @@ const EditModal = () => {
                 onChange={handleDateChange}/>
                 
                 <div className="cont-submit">
-                    <button>{submitButtonTitle}</button>
+                    <button onClick={handleUpdateClick}>{submitButtonTitle}</button>
                 </div>
             </div>
         </div>

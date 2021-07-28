@@ -1,6 +1,9 @@
 import { ajaxCall } from './utils'
 
 
+export const updateTransactionCall = async (id, name, amount, date) => {
+    return await  ajaxCall('http://localhost:5000/api/v1/transactions','put',{id, name, amount, date})
+}
 
 export const deleteTransactionCall = async id => {
     return await  ajaxCall('http://localhost:5000/api/v1/transactions','delete',{id})

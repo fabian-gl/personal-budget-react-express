@@ -21,12 +21,7 @@ const AppReducer = (state, action) => {
                 ...state,
                 loading: true
             }
-            
-        case 'DELETE_TRANSACTION':
-            return {
-                ...state,
-                idToEdit: undefined
-            }            
+                      
             
         case 'GET_SUMMARY_INFORMATION':
             return {
