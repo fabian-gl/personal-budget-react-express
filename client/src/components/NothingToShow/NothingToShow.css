@@ -1,0 +1,18 @@
+.cont-nothing-to-show {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cont-nothing-to-show img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cont-nothing-to-show .message {
+    margin-top: -5vh;
+}
