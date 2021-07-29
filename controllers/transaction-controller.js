@@ -116,7 +116,6 @@ exports.getTransactions = (req, res, next) => {
     queryPromise('SELECT * FROM transactions')
     .then(result => {
         setTimeout(() => {
-            console.log(result)
             res.status(200).json({transactions: result})
         }, 1000)
     })

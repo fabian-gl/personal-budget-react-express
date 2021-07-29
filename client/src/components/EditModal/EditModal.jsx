@@ -10,22 +10,31 @@ const EditModal = () => {
 
     const currentTransaction = (idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {})
     
-    console.log(currentTransaction.date)
     const [transactionName, setTransactionName] = useState(currentTransaction.name || '')
     const [transactionAmount, setTransactionAmount] = useState(currentTransaction.amount || '')
     const [transactionDate, setTransactionDate] = useState(currentTransaction.date || todayFormatted())
     const [transactionType, setTransactionType] = useState(currentTransaction.type || '')
 
+    const [typeFromInput, setTypeFromInput] = useState(0)
 
-    const handleNameChange = (e) => {
+    const handleNameChange = e => {
         setTransactionName(e.target.value)
     }
-    const handleAmountChange = (e) => {
+    const handleAmountChange = e => {
         setTransactionAmount(e.target.value)
     }
-    const handleTypeChange = setTransactionType
-    
-    const handleDateChange = (e) => {
+
+    const handleKeyDown = e => {
+        if (e.key === '+') setTypeFromInput(1)
+        else if (e.key === '-') setTypeFromInput(2)
+    }
+
+    const handleTypeChange = newType => {
+        setTransactionType(newType)
+        if ((Number(transactionAmount) > 0 && newType === 2) || (Number(transactionAmount) < 0 && newType === 1)) setTransactionAmount(-transactionAmount)
+    }
+
+    const handleDateChange = e => {
         setTransactionDate(e.target.value)
     }
 
@@ -67,7 +76,7 @@ const EditModal = () => {
                     <div>&#x2716;</div>
                 </div>
             </div>
-            <OptionType onOptionChange={handleTypeChange}/>
+            <OptionType initialType={typeFromInput} onOptionChange={handleTypeChange}/>
 
             <div className="cont-transaction-info">
                 {deleteTransactionElement}
@@ -78,8 +87,9 @@ const EditModal = () => {
                     onChange={handleNameChange}/>
                 
                 <label htmlFor="transactionAmount">Transaction Amount:</label>
-                <input type="text" name='transactionAmount' 
+                <input type="number" name='transactionAmount' 
                     value={transactionAmount} 
+                    onKeyDown={handleKeyDown}
                     onChange={handleAmountChange}/>
                 
                 <label htmlFor="transactionDate">Transaction Date:</label>

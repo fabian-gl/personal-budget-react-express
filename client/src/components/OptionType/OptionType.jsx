@@ -1,14 +1,19 @@
 import './OptionType.css'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import moneyIn from '../../assets/money-in.png'
 import moneyOut from '../../assets/money-out.png'
 
-const OptionType = ({onOptionChange}) => {
+const OptionType = ({onOptionChange, initialType = 0}) => {
 
-    const [typeSelected, setTypeSelected] = useState(0)
-
+    
+    const [typeSelected, setTypeSelected] = useState(initialType)
+    useEffect(() => {
+        console.log(initialType)
+        setTypeSelected(initialType)
+    }, [initialType])
+    
     const handleOptionClick = type => {
         if (typeSelected === type)
         {
