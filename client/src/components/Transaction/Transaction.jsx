@@ -5,7 +5,7 @@ import moneyOut from '../../assets/money-out.png'
 
 import EditButton from '../EditButton/EditButton'
 
-import { formatAmount, formatDate } from '../../utils'
+import { formatAmount } from '../../utils'
 
 
 const Transaction = ({id, name, amount, type, date, editable = false}) => {
@@ -20,7 +20,7 @@ const Transaction = ({id, name, amount, type, date, editable = false}) => {
             </div>
             <div className="cont-middle">
                 <div className='name'>{name}</div>
-                <div className='date'>{formatDate(date)}</div>
+                <div className='date'>{date}</div>
             </div>
             <div className="cont-right">
                 <div className={className}>{formatAmount(amount)}</div>

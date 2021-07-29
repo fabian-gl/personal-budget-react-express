@@ -2,17 +2,18 @@ import './EditModal.css'
 
 import { useEffect, useContext, useState } from 'react';
 import { GlobalContext } from '../../context/GlobalState'
-import { formatDate } from '../../utils'
+import { todayFormatted } from '../../utils'
 
 const EditModal = () => {
-    const { updateTransaction, deleteTransaction, hideModal, getAllTransactions, transactions, idToEdit } = useContext(GlobalContext);
+    const { addTransaction, updateTransaction, deleteTransaction, hideModal, transactions, idToEdit } = useContext(GlobalContext);
 
     const currentTransaction = (idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {})
     
-    const [transactionName, setTransactionName] = useState(currentTransaction.name)
-    const [transactionAmount, setTransactionAmount] = useState(currentTransaction.amount)
-    const [transactionDate, setTransactionDate] = useState(currentTransaction.date)
-    const [transactionType, setTransactionType] = useState(currentTransaction.type)
+    console.log(currentTransaction.date)
+    const [transactionName, setTransactionName] = useState(currentTransaction.name || '')
+    const [transactionAmount, setTransactionAmount] = useState(currentTransaction.amount || '')
+    const [transactionDate, setTransactionDate] = useState(currentTransaction.date || todayFormatted())
+    const [transactionType, setTransactionType] = useState(currentTransaction.type || '')
 
 
     const handleNameChange = (e) => {
@@ -35,17 +36,21 @@ const EditModal = () => {
         hideModal()
     }
     
-    let modalTitle, submitButtonTitle, deleteTransactionElement
+    const handleAddClick = async () => {
+        await addTransaction(transactionName, transactionAmount, 1, transactionDate)
+        hideModal()
+    }
+    let modalTitle, submitButton, deleteTransactionElement
     if (idToEdit)
     {
         modalTitle = 'Edit or delete transaction'
-        submitButtonTitle = 'Update transaction information'
+        submitButton = <button onClick={handleUpdateClick}>Update transaction information</button>
         deleteTransactionElement = <button onClick={handleDeleteClick}>Delete transaction</button>
     }
     else
     {
         modalTitle = 'New transaction'
-        submitButtonTitle = 'Add new transaction'
+        submitButton = <button onClick={handleAddClick}>Add transaction</button>
         deleteTransactionElement = null
     }
 
@@ -74,11 +79,11 @@ const EditModal = () => {
                 
                 <label htmlFor="transactionDate">Transaction Date:</label>
                 <input type="date" name='transactionDate' 
-                value={formatDate(transactionDate)} 
+                value={transactionDate} 
                 onChange={handleDateChange}/>
                 
                 <div className="cont-submit">
-                    <button onClick={handleUpdateClick}>{submitButtonTitle}</button>
+                    {submitButton}
                 </div>
             </div>
         </div>

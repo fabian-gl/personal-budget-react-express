@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import AppReducer from './AppReducer'
-import { getSummaryInformationCall, getTransactionsCall, deleteTransactionCall, updateTransactionCall } from '../serverCalls'
+import { addTransactionCall, getSummaryInformationCall, getTransactionsCall, deleteTransactionCall, updateTransactionCall } from '../serverCalls'
 
 
 const initialState = {
@@ -28,6 +28,14 @@ export const GlobalProvider = ({children}) => {
         dispatch({
             type: 'HIDE_MODAL'
           })
+    }
+
+    const addTransaction = async (name, amount, type, date) => {
+
+        const response = await addTransactionCall(name, amount, type, date)
+
+        console.log(response)
+        getAllTransactions()
     }
 
     const updateTransaction = async (id, name, amount, date) => {
@@ -85,6 +93,7 @@ export const GlobalProvider = ({children}) => {
             idToEdit: state.idToEdit,
             showModal,
             hideModal,
+            addTransaction,
             updateTransaction,
             deleteTransaction,
             getSummaryInformation,

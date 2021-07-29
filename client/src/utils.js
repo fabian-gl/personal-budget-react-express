@@ -1,5 +1,12 @@
-export const formatDate = date => {
-    if (date) return date.split('T')[0]
+
+export const todayFormatted = () =>
+{
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const day = today.getDate()
+
+    return `${year}-${month}-${day}`
 }
 
 export const formatAmount = amount => {

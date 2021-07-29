@@ -1,19 +1,7 @@
 const { getDbConnection } = require('../config/db')
 
 
-const prepareUpdateQuery = (params) => {
 
-    const {id, ...updatableParams} = params 
-    let setClause = ''
-
-    console.log(updatableParams)
-    for (const key in updatableParams){
-        if (updatableParams[key]) 
-            setClause += `${(setClause === '' ? '' : ', ')}${key} = '${updatableParams[key]}'`
-    }
-
-    return `UPDATE transactions SET ${setClause} WHERE id = ${id}`
-}
 
 // get latest transactions and balance
 // route: GET base_url/api/v1/transactions
@@ -41,22 +29,46 @@ exports.updateTransaction = (req, res, next) => {
 
 }
 
+const prepareUpdateQuery = (params) => {
+
+    const {id, ...updatableParams} = params 
+    let setClause = ''
+
+    for (const key in updatableParams){
+        if (updatableParams[key]) 
+            setClause += `${(setClause === '' ? '' : ', ')}${key} = '${updatableParams[key]}'`
+    }
+
+    return `UPDATE transactions SET ${setClause} WHERE id = ${id}`
+}
+
+
 
 // get latest transactions and balance
 // route: GET base_url/api/v1/transactions
 exports.addTransaction = (req, res, next) => {
-    console.log('check params')
-    console.log(req.body)
-    const id = 213//req.body.id
-    // console.log('got here')
-    // // console.log(req)
-    // // const latestTransactions = queryPromise('SELECT * FROM transactions LIMIT 10')
-    res.status(200).json({ok: true, id})
-    // .catch(err => {
-    //     res.status(500).json({message: `Couldn't retrieve transaction: ${err}`})
-    // })
 
+    const possibleParams = {
+        name: req.body.name,
+        amount: req.body.amount,
+        type: req.body.type,
+        date: req.body.date
+    }
+
+    const query = `INSERT INTO transactions (name, amount, type, date) VALUES ('${possibleParams.name}', '${possibleParams.amount}', '${possibleParams.type}', '${possibleParams.date}')`
+
+    // res.status(200).json({result: 'result', possibleParams, query})
+    // return
+
+    queryPromise(query)
+    .then(result => {
+        res.status(200).json({result: result})
+    })
+    .catch(err => {
+        res.status(500).json({message: `Couldn't insert transaction: ${err}`})
+    })
 }
+
 
 // delete the transaction corresponding to the id sent
 // route: DELETE base_url/api/v1/transactions
@@ -104,6 +116,7 @@ exports.getTransactions = (req, res, next) => {
     queryPromise('SELECT * FROM transactions')
     .then(result => {
         setTimeout(() => {
+            console.log(result)
             res.status(200).json({transactions: result})
         }, 1000)
     })
@@ -112,7 +125,6 @@ exports.getTransactions = (req, res, next) => {
     })
 
 }
-
 
 const queryPromise = (sqlQuery) => {
 

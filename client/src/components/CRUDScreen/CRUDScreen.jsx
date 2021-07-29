@@ -7,7 +7,7 @@ import TransactionFilters from '../TransactionFilters/TransactionFilters';
 import EditModal from '../EditModal/EditModal';
 
 const CRUDScreen = () => {
-    const { showingModal, getAllTransactions, transactions, loading } = useContext(GlobalContext);
+    const { showModal, showingModal, getAllTransactions, transactions, loading } = useContext(GlobalContext);
     
     useEffect( () => {
         getAllTransactions()
@@ -21,10 +21,8 @@ const CRUDScreen = () => {
         setFiltersArray(filtersToApply)
     }
 
-    const handleButtonClick = () => {
-        console.log('object')
-    }
-
+    const handleButtonClick = () => showModal()
+    
     return (
         <div className='cont-crud'>
             {modal}
