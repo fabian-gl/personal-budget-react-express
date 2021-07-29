@@ -1,15 +1,30 @@
+.cont-outer-modal {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: rgba(128, 128, 128, 0.459);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .cont-modal {
     width: 50vw;
     height: 50vh;
     position: absolute;
-    background: green;
+    background: lightgrey;
     display: flex;
     flex-direction: column;
+    border: 2px solid black;
 }
 
 .cont-modal .cont-header {
     width: 100%;
-    background: blue;
+    background: black;
+    color: white;
+    padding-left: 2vh;
     height: 7vh;
     display: flex;
     justify-content: space-between;

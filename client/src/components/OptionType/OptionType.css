@@ -6,6 +6,7 @@
 .cont-option-type img {
     height: 8vh;
     margin: 0 1vh;
+    cursor: pointer;
 }
 
 .cont-option-type img.option-not-selected {
