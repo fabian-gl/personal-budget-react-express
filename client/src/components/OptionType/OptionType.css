@@ -1,0 +1,13 @@
+.cont-option-type {
+    display: flex;
+    justify-content: center;
+}
+
+.cont-option-type img {
+    height: 8vh;
+    margin: 0 1vh;
+}
+
+.cont-option-type img.option-not-selected {
+    opacity: 0.5;
+}

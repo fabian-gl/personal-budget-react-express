@@ -1,8 +1,9 @@
 import './EditModal.css'
 
-import { useEffect, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from '../../context/GlobalState'
 import { todayFormatted } from '../../utils'
+import OptionType from '../OptionType/OptionType';
 
 const EditModal = () => {
     const { addTransaction, updateTransaction, deleteTransaction, hideModal, transactions, idToEdit } = useContext(GlobalContext);
@@ -22,6 +23,8 @@ const EditModal = () => {
     const handleAmountChange = (e) => {
         setTransactionAmount(e.target.value)
     }
+    const handleTypeChange = setTransactionType
+    
     const handleDateChange = (e) => {
         setTransactionDate(e.target.value)
     }
@@ -37,7 +40,7 @@ const EditModal = () => {
     }
     
     const handleAddClick = async () => {
-        await addTransaction(transactionName, transactionAmount, 1, transactionDate)
+        await addTransaction(transactionName, transactionAmount, transactionType, transactionDate)
         hideModal()
     }
     let modalTitle, submitButton, deleteTransactionElement
@@ -64,23 +67,25 @@ const EditModal = () => {
                     <div>&#x2716;</div>
                 </div>
             </div>
+            <OptionType onOptionChange={handleTypeChange}/>
+
             <div className="cont-transaction-info">
                 {deleteTransactionElement}
                 
                 <label htmlFor="transactionName">Transaction Name:</label>
                 <input type="text" name='transactionName' 
-                value={transactionName} 
-                onChange={handleNameChange}/>
+                    value={transactionName} 
+                    onChange={handleNameChange}/>
                 
                 <label htmlFor="transactionAmount">Transaction Amount:</label>
                 <input type="text" name='transactionAmount' 
-                value={transactionAmount} 
-                onChange={handleAmountChange}/>
+                    value={transactionAmount} 
+                    onChange={handleAmountChange}/>
                 
                 <label htmlFor="transactionDate">Transaction Date:</label>
                 <input type="date" name='transactionDate' 
-                value={transactionDate} 
-                onChange={handleDateChange}/>
+                    value={transactionDate} 
+                    onChange={handleDateChange}/>
                 
                 <div className="cont-submit">
                     {submitButton}
