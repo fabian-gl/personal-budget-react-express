@@ -8,10 +8,9 @@ Mock working database: transactions.sql file in root folder.
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This will run the React Client at http://localhost:3000, and run the backend at http://localhost:5000
 
 
 ### `npm run build`
