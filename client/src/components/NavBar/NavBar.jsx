@@ -34,7 +34,7 @@ const NavBar = () => {
             </div>
             <div>
                 <div className="menu-cellphone hidden">
-                    { menu.map((elem, index) => <NavBarItem {...elem} key={index}/>) }
+                    { menu.map((elem, index) => <NavBarItem onClick={toggleMenuCelu} {...elem} key={index}/>) }
                 </div>
             </div>
             
