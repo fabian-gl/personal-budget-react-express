@@ -137,7 +137,7 @@ exports.deleteTransaction =  (req, res, next) => {
 // route: GET /api/v1/transactions
 exports.getSummaryInfo = (req, res, next) => {
 
-    const latestTransactions = queryPromise('SELECT * FROM transactions LIMIT 10')
+    const latestTransactions = queryPromise('SELECT * FROM transactions ORDER BY id DESC LIMIT 10')
     const balance = queryPromise('SELECT SUM(amount) FROM transactions')
 
     Promise.all([latestTransactions, balance]).then(([latestTransactionsResult, balanceResult]) => {  
@@ -160,7 +160,7 @@ const getValueFromSqlResultObject = result => Object.values(result[0])[0]
 // route: GET /api/v1/transactions
 exports.getTransactions = (req, res, next) => {
 
-    queryPromise('SELECT * FROM transactions')
+    queryPromise('SELECT * FROM transactions ORDER BY id DESC')
     .then(result => {
         // timeout included to simulate server delays
         setTimeout(() => {
