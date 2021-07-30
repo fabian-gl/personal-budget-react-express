@@ -111,16 +111,25 @@ const validateParams = params => {
 // route: DELETE /api/v1/transactions
 exports.deleteTransaction =  (req, res, next) => {
 
-    const idToDelete = parseInt(req.body.id)
+    const params = {
+        id: req.body.id || null
+    }
 
-    queryPromise(`DELETE FROM transactions WHERE id=${idToDelete}`)
+    const validationResult = validateParams(params)
+
+    if (!validationResult.valid)
+    {
+        res.status(400).json({ok: false, errors: validationResult.errors})
+        return
+    }
+
+    queryPromise(`DELETE FROM transactions WHERE id=${params.id}`)
     .then(result => {
         res.status(200).json({result: result})
     })
     .catch(err => {
         res.status(500).json({error: `Couldn't delete transaction: ${err}`})
     })
-    
 }
 
 
