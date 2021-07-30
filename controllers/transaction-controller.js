@@ -179,7 +179,6 @@ const queryPromise = (sqlQuery) => {
         const dbConnection = getDbConnection()
 
         dbConnection.query(sqlQuery, (err, result) => {
-            console.log(err)
             if (err) reject(err)
             resolve(result)
         })

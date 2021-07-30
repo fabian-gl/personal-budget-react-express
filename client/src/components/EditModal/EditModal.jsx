@@ -83,26 +83,37 @@ const EditModal = () => {
     }
 
     const handleDeleteClick = async () => {
-        await deleteTransaction(idToEdit)
-        hideModal()
+        try {
+            await deleteTransaction(idToEdit)
+            hideModal()
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const handleUpdateClick = async () => {
-        if (!validateInputs()) return
-        await updateTransaction(idToEdit, transactionName, transactionAmount, transactionDate)
-        hideModal()
+        try {
+            if (!validateInputs()) return
+            await updateTransaction(idToEdit, transactionName, transactionAmount, transactionDate)
+            hideModal()
+        } catch (error) {
+            alert(error)
+        }        
     }
     
     const handleAddClick = async () => {
-        if (!validateInputs()) return
-        await addTransaction(transactionName, transactionAmount, transactionType, transactionDate)
-        hideModal()
+        try {
+            if (!validateInputs()) return
+            await addTransaction(transactionName, transactionAmount, transactionType, transactionDate)
+            hideModal()
+        } catch (error) {
+            alert(error)
+        }           
     }
 
     const handleClickOutOfModal = e => {
         if (e.target.classList.contains('cont-outer-modal')) hideModal()
     }
-
 
     let modalTitle, submitButton, deleteTransactionElement, optionTypeInput
     if (idToEdit)
