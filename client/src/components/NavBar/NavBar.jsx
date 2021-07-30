@@ -11,6 +11,10 @@ const NavBar = () => {
 
     const toggleMenuCelu = () => document.querySelector('.menu-cellphone').classList.toggle('hidden')
 
+    const closeMenu = () => {
+        document.querySelector('.cont-navbar .cont-hamburger input').click()
+    }
+
     return (
         <div className='cont-navbar'>
             <div className="fila-nav-sup">
@@ -34,7 +38,7 @@ const NavBar = () => {
             </div>
             <div>
                 <div className="menu-cellphone hidden">
-                    { menu.map((elem, index) => <NavBarItem onClick={toggleMenuCelu} {...elem} key={index}/>) }
+                    { menu.map((elem, index) => <NavBarItem onClick={closeMenu} {...elem} key={index}/>) }
                 </div>
             </div>
             
