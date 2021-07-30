@@ -15,7 +15,7 @@ const CRUDScreen = () => {
     }, [])
 
     const modal = (showingModal ? <EditModal/> : null)
-    const [filtersArray, setFiltersArray] = useState([1, 2])
+    const [filtersArray, setFiltersArray] = useState([1, -1])
 
     const onFiltersChange = (filtersToApply) => {
         setFiltersArray(filtersToApply)

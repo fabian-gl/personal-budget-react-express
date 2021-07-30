@@ -6,8 +6,8 @@ const TransactionFilters = ({onFiltersChange}) => {
         const checkFilters = Array.from(document.querySelectorAll('.cont-filters .check-filter'))
         const arrayFilters = []
 
-        checkFilters.forEach((checkBox, index) => {
-            if (checkBox.checked) arrayFilters.push(index + 1)
+        checkFilters.forEach( checkBox => {
+            if (checkBox.checked) arrayFilters.push(parseInt(checkBox.dataset.type))
         })
         onFiltersChange(arrayFilters)
     }
@@ -21,6 +21,7 @@ const TransactionFilters = ({onFiltersChange}) => {
                     <input type='checkbox' 
                         className='check-filter'
                         defaultChecked={true}
+                        data-type={1}
                         name='filterIncomes' 
                         onChange={handleCheckboxChange} />
                 </label>
@@ -28,6 +29,7 @@ const TransactionFilters = ({onFiltersChange}) => {
                     <input type='checkbox' 
                         className='check-filter'
                         defaultChecked={true}
+                        data-type={-1}
                         name='filterOutcomes' 
                         onChange={handleCheckboxChange} />
                 </label>

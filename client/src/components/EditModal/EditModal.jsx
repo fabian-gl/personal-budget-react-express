@@ -5,7 +5,8 @@ import { GlobalContext } from '../../context/GlobalState'
 import { todayFormatted } from '../../utils'
 import OptionType from '../OptionType/OptionType';
 
-
+const INCOME_TYPE = 1
+const OUTCOME_TYPE = -1
 
 const EditModal = () => {
     const { addTransaction, updateTransaction, deleteTransaction, hideModal, transactions, idToEdit } = useContext(GlobalContext);
@@ -33,8 +34,9 @@ const EditModal = () => {
             alert('Please enter a valid amount')
             return false
         }
-
-        if ((transactionAmount < 0 && transactionType === 1) || (transactionAmount > 0 && transactionType === 2))
+        console.log(transactionAmount)
+        console.log(transactionType)
+        if ((transactionAmount * transactionType < 0))
         {
             alert(`Your original transaction was a ${(transactionType === 1 ? 'input' : 'output')}, and the sign of the new amount must be consistent with that`)
             return false
@@ -59,12 +61,12 @@ const EditModal = () => {
         setTransactionName(e.target.value)
     }
     const handleAmountChange = e => {
-        if (e.target.value < 0) updateTypeInput(2)
+        if (e.target.value < 0) updateTypeInput(OUTCOME_TYPE)
         setTransactionAmount(e.target.value)
     }
     const handleKeyDown = e => {
-        if (e.key === '+') updateTypeInput(1)
-        else if (e.key === '-') updateTypeInput(2)
+        if (e.key === '+') updateTypeInput(INCOME_TYPE)
+        else if (e.key === '-') updateTypeInput(OUTCOME_TYPE)
     }
 
     const updateTypeInput = newType => {
@@ -74,7 +76,7 @@ const EditModal = () => {
 
     const handleTypeChange = newType => {
         setTransactionType(newType)
-        if ((Number(transactionAmount) > 0 && newType === 2) || (Number(transactionAmount) < 0 && newType === 1)) setTransactionAmount(-transactionAmount)
+        if ((Number(transactionAmount) > 0 && newType === OUTCOME_TYPE) || (Number(transactionAmount) < 0 && newType === INCOME_TYPE)) setTransactionAmount(-transactionAmount)
     }
 
     const handleDateChange = e => {
