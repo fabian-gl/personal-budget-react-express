@@ -2,10 +2,10 @@ import './NavBarItem.css'
 
 import { NavLink } from 'react-router-dom'
 
-const NavBarItem = ({name, route}) => {
+const NavBarItem = ({name, route, onClick}) => {
 
     return (
-        <NavLink className='link-element navbar-button' exact to={route} activeClassName='selected'>
+        <NavLink onClick={onClick} className='link-element navbar-button' exact to={route} activeClassName='selected'>
             {name}
         </NavLink>
     )
