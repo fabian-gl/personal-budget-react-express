@@ -13,12 +13,15 @@ const app = express()
 // Enable cross-origin requests from any domain
 app.use(cors({methods: 'OPTIONS, GET, POST, PUT, DELETE'}))
 
-
-
 // json body parser, to send json data in request body
 app.use(express.json())
 
-if(process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+if(process.env.NODE_ENV === 'production')
+{
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')));
+}
+else if(process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 const SERVER_PORT = process.env.SERVER_PORT || 5000
 
@@ -31,4 +34,3 @@ initDb().then(() => {
 })
 
 app.use('/api/v1/transactions', require('./routes/transactions'))
-
