@@ -31,7 +31,7 @@ const CRUDScreen = () => {
                 <button onClick={handleButtonClick}>Add new Transaction</button>
             </div>
             <div className="cont-transaction-list">
-                <TransactionList loading={loading} editable={true} title={'Transactions'} transactions={transactions.filter(transaction => filtersArray.includes(transaction.type))} />
+                <TransactionList loading={loading} editable={true} transactions={transactions.filter(transaction => filtersArray.includes(transaction.type))} />
             </div>
         </div>
     )

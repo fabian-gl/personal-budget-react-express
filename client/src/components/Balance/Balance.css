@@ -1,6 +1,5 @@
 .balance {
-    background: var(--positive-background);
-    color: var(--positive-text);
+    background: lightgrey;
     text-align: center;
     font-size: 5vh;
     font-weight: bold;
@@ -8,6 +7,5 @@
 }
 
 .balance.negative {
-    background: var(--negative-background);
-    color: var(--negative-text);
+    color: red;
 }

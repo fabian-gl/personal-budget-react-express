@@ -3,8 +3,10 @@
   --negative-background: rgb(255, 191, 201);
   --positive-text: rgb(0, 105, 0);
   --positive-background: rgb(169, 255, 169);
-  --navbar-height: 12vh;
+  --navbar-height: 11vh;
   --navbar-color: linear-gradient(#323949, #1a2330);
+
+  --box-border-color: lightgrey
 }
 
 * {
@@ -19,6 +21,7 @@ html, body {
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +30,13 @@ body {
   font-family: Calibri, 'Gill Sans', sans-serif;
 }
 
+#root {
+  position: relative;
+  height: 100%;
+}
+
 .cont-app {
+  position: relative;
   height: 100%;
   width: 60vw;
   display: flex;
@@ -64,5 +73,5 @@ body {
 ::-webkit-scrollbar-thumb {
   background: white;
   width: 5px;
-  /* border-radius: 9px; */
+  border-radius: 9px;
 }

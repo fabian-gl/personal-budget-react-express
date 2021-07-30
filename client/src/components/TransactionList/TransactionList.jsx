@@ -22,8 +22,10 @@ const TransactionList = ({ transactions, title, editable=false, loading=false })
     return (
         <TitledContainer title={title}>
             <div className="transaction-list">
-                {loading && <Spinner />}
-                {!loading && infoToShow}
+                <div className="inner-transaction-list">
+                    {loading && <Spinner />}
+                    {!loading && infoToShow}
+                </div>
             </div>
         </TitledContainer>
     )

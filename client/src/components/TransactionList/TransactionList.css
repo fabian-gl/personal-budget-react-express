@@ -1,8 +1,16 @@
 .transaction-list {
-    padding: 1vh 2vh;
-    max-height: 55vh;
+    max-height: 100%;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.transaction-list .inner-transaction-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1vh 2vh;
+    border-right: 2px solid var(--box-border-color);
 }

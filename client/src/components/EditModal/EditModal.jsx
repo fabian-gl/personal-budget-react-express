@@ -107,7 +107,7 @@ const EditModal = () => {
     let modalTitle, submitButton, deleteTransactionElement, optionTypeInput
     if (idToEdit)
     {
-        modalTitle = 'Edit or delete transaction'
+        modalTitle = 'Edit or delete'
         submitButton = <button onClick={handleUpdateClick}>Update information</button>
         deleteTransactionElement = <button onClick={handleDeleteClick} className='delete'>Delete</button>
         optionTypeInput = null
@@ -134,28 +134,29 @@ const EditModal = () => {
                 </div>
                 
                 <div className="cont-transaction-info">
-                    
-                    <label htmlFor="transactionName">Name:</label>
-                    <input type="text" name='transactionName' autoComplete='off'
-                        value={transactionName} 
-                        onChange={handleNameChange}/>
-                    
-                    <label htmlFor="transactionAmount">Amount:</label>
-                    <input type="number" name='transactionAmount' autoComplete='off'
-                        value={transactionAmount} 
-                        onKeyDown={handleKeyDown}
-                        onChange={handleAmountChange}/>
+                    <div className="cont-inner-transaction-info">
+                        <label htmlFor="transactionName">Name:</label>
+                        <input type="text" name='transactionName' autoComplete='off'
+                            value={transactionName} 
+                            onChange={handleNameChange}/>
+                                <label htmlFor="transactionAmount">Amount:</label>
+                        <div className="cont-amount-type">
+                            <input type="number" name='transactionAmount' autoComplete='off'
+                                value={transactionAmount} 
+                                onKeyDown={handleKeyDown}
+                                onChange={handleAmountChange}/>
+                            {optionTypeInput}
+                        </div>
 
-                    {optionTypeInput}
-
-                    <label htmlFor="transactionDate">Date:</label>
-                    <input type="date" name='transactionDate' 
-                        value={transactionDate} 
-                        onChange={handleDateChange}/>
-                    
-                    <div className="cont-submit">
-                        {submitButton}
-                        {deleteTransactionElement}
+                        <label htmlFor="transactionDate">Date:</label>
+                        <input type="date" name='transactionDate' 
+                            value={transactionDate} 
+                            onChange={handleDateChange}/>
+                        
+                        <div className="cont-submit">
+                            {submitButton}
+                            {deleteTransactionElement}
+                        </div>
                     </div>
                 </div>
             </div>

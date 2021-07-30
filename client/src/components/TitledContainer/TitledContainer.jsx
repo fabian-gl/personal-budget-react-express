@@ -1,21 +1,19 @@
 import './TitledContainer.css'
 
 const TitledContainer = ({ title, children }) => {
-    let sanitizedChildren = []
+    let arrayChildren = []
 
     if (children)
     {
-        if (Array.isArray(children)) sanitizedChildren = children
-        else sanitizedChildren.push(children)
+        if (Array.isArray(children)) arrayChildren = children
+        else arrayChildren.push(children)
     }
 
     return (
         <div className='cont-titled-container'>
-            <div className="cont-title">
-                <div>{ title }</div>
-            </div>
+            {title && <div className="cont-title">{title}</div>}
             <div className="cont-content">
-                { sanitizedChildren.map(child => child) }
+                { arrayChildren.map(child => child) }
             </div>
         </div>
     )
