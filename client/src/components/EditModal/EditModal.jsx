@@ -34,8 +34,7 @@ const EditModal = () => {
             alert('Please enter a valid amount')
             return false
         }
-        console.log(transactionAmount)
-        console.log(transactionType)
+
         if ((transactionAmount * transactionType < 0))
         {
             alert(`Your original transaction was a ${(transactionType === 1 ? 'input' : 'output')}, and the sign of the new amount must be consistent with that`)
