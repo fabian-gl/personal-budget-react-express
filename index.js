@@ -11,7 +11,9 @@ dotenv.config({path: './config/config.env'})
 const app = express()
 
 // Enable cross-origin requests from any domain
-app.use(cors())
+app.use(cors({methods: 'OPTIONS, GET, POST, PUT, DELETE'}))
+
+
 
 // json body parser, to send json data in request body
 app.use(express.json())

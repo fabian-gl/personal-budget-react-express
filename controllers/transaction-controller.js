@@ -1,4 +1,5 @@
 const { getDbConnection } = require('../config/db')
+const { param } = require('../routes/transactions')
 
 
 
@@ -55,6 +56,14 @@ exports.addTransaction = (req, res, next) => {
         date: req.body.date
     }
 
+    const validationResult = validateParams(possibleParams)
+
+    if (!validationResult.valid)
+    {
+        res.status(400).json({ok: false, errors: validationResult.errors})
+        return
+    }
+
     const query = `INSERT INTO transactions (name, amount, type, date) VALUES ('${possibleParams.name}', '${possibleParams.amount}', '${possibleParams.type}', '${possibleParams.date}')`
 
     // res.status(200).json({result: 'result', possibleParams, query})
@@ -67,6 +76,34 @@ exports.addTransaction = (req, res, next) => {
     .catch(err => {
         res.status(500).json({message: `Couldn't insert transaction: ${err}`})
     })
+}
+
+const validateParams = params => {
+    
+    const errors = []
+    console.log(params)
+    Object.keys(params).forEach(key => {
+        const value = params[key]
+
+        if (key === 'name')
+            if (String(value).length < 2) 
+                errors.push('The name is too short')
+        
+        if (key === 'amount')
+            if (!Number(value) || isNaN(value)) 
+                errors.push(`The amount must be a valid number, different from zero, and can contain '.' for decimal place separation`)
+
+        if (key === 'type')
+            if (Math.abs(Number(value)) !== 1) 
+                errors.push(`The type of transaction can be '1' for income and '-1' for outcome`)
+
+        if (key === 'date')
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(value))
+                errors.push('The date must have the format YYYY-MM-DD') 
+    })
+
+    const valid = errors.length === 0
+    return {valid, errors}
 }
 
 

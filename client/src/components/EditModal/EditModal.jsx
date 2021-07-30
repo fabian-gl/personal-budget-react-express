@@ -46,7 +46,7 @@ const EditModal = () => {
             return false
         }
 
-        if (!transactionDate || !/^\d{4}-\d{2}-\d{2}$/.test(transactionDate))
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(transactionDate))
         {
             alert('Please select a valid date')
             return false
@@ -59,13 +59,17 @@ const EditModal = () => {
         setTransactionName(e.target.value)
     }
     const handleAmountChange = e => {
-        if (e.target.value < 0) setTypeFromInput(2)
+        if (e.target.value < 0) updateTypeInput(2)
         setTransactionAmount(e.target.value)
     }
-
     const handleKeyDown = e => {
-        if (e.key === '+') setTypeFromInput(1)
-        else if (e.key === '-') setTypeFromInput(2)
+        if (e.key === '+') updateTypeInput(1)
+        else if (e.key === '-') updateTypeInput(2)
+    }
+
+    const updateTypeInput = newType => {
+        setTypeFromInput(newType)
+        setTransactionType(newType)
     }
 
     const handleTypeChange = newType => {

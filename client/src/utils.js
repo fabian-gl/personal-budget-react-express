@@ -12,7 +12,7 @@ export const todayFormatted = () =>
 export const formatAmount = amount => {
     const absoluteAmount = Math.abs(Number(amount))
     const preffixMinus = (isNegative(amount) ? '-' : '')
-    return `${preffixMinus}$ ${absoluteAmount}`
+    return `${preffixMinus}$ ${absoluteAmount.toFixed(2)}`
 }
 
 export const isNegative = amount => Number(amount) < 0
