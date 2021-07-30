@@ -21,6 +21,10 @@
     max-height: 90%;
 }
 
+.cont-crud .cont-transaction-list .cont-titled-container .cont-content {
+    height: 100%;
+}
+
 .cont-crud button {
     margin: 0 2vh 1vh 0;
     padding: 0.5em 0.5em;

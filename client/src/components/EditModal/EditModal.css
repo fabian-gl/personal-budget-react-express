@@ -36,6 +36,10 @@
     .cont-modal .cont-transaction-info .cont-inner-transaction-info {
         width: 90%;
     }
+
+    .cont-inner-transaction-info input {
+        height: 5vh;
+    }
 }
 
 .cont-modal .cont-header {

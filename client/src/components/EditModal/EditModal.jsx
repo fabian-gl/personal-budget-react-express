@@ -43,7 +43,7 @@ const EditModal = () => {
 
         if (!transactionType)
         {
-            alert('Please select a valid transaction type')
+            alert('Please select income or outcome using the icons')
             return false
         }
 
