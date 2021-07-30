@@ -59,6 +59,20 @@
     justify-content: space-around;
 }
 
+.cont-submit {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .cont-modal .cont-transaction-info button {
-    padding: 0.25em 0.5em;
+    padding: 0.5em 0.5em;
+    border: none;
+    border-radius: 0.5em;
+    background: #fbaf3a;
+    cursor: pointer;
+}
+
+.cont-modal .cont-transaction-info button.delete {
+    background: #ff5a66;
 }

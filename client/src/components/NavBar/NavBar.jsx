@@ -4,10 +4,9 @@ import NavBarItem from '../NavBarItem/NavBarItem'
 import Logo from '../Logo/Logo'
 
 const NavBar = () => {
-    // const menu = ['Summary', 'Add or Edit Transaction']
     const menu = [
         {name: 'Summary', route: '/'},
-        {name: 'Add or Edit Transaction', route: '/crud'}
+        {name: 'Edit Transactions', route: '/crud'}
     ]
 
     const toggleMenuCelu = () => document.querySelector('.menu-cellphone').classList.toggle('hidden')

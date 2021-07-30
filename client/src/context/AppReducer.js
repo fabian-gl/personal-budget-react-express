@@ -22,7 +22,11 @@ const AppReducer = (state, action) => {
                 balance: 0,
                 loading: true
             }
-                      
+        case 'SET_LOADING_FALSE':
+            return {
+                ...state,
+                loading: false
+            }
         case 'GET_SUMMARY_INFORMATION':
             return {
                 ...state,

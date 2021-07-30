@@ -9,14 +9,11 @@
     transform: scale(1);
     font-size: 3.5vh;
     text-align: center;
+    flex: 1;
 }
 
-.navbar-button:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease-in;
-}
-
-.navbar-button .link-element.selected {
-    color: rgb(51, 51, 255);
-    font-weight: bold;
+.navbar-button.selected {
+    background-color: black;
+    transition: background-color 0.3s;
+    height: 100%;
 }

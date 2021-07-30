@@ -4,7 +4,7 @@
   --positive-text: rgb(0, 105, 0);
   --positive-background: rgb(169, 255, 169);
   --navbar-height: 12vh;
-  --navbar-color: black;
+  --navbar-color: linear-gradient(#323949, #1a2330);
 }
 
 * {
@@ -24,6 +24,7 @@ body {
   align-items: center;
   justify-content: center;
   padding-top: var(--navbar-height);
+  font-family: Calibri, 'Gill Sans', sans-serif;
 }
 
 .cont-app {
@@ -55,11 +56,13 @@ body {
   width: 9px;
 }
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 9px;
+  background: lightgray;
+  /* box-shadow: inset 0 0 5px grey; */
+  /* border-radius: 9px; */
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: grey;
-  border-radius: 9px;
+  background: white;
+  width: 5px;
+  /* border-radius: 9px; */
 }

@@ -6,6 +6,12 @@
     justify-content: center;
 }
 
+.cont-crud .cont-sup {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .cont-crud .cont-transaction-list {
     width: 100%;
 }

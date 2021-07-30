@@ -60,7 +60,6 @@ const EditModal = () => {
         setTransactionName(e.target.value)
     }
     const handleAmountChange = e => {
-        if (e.target.value < 0) updateTypeInput(OUTCOME_TYPE)
         setTransactionAmount(e.target.value)
     }
     const handleKeyDown = e => {
@@ -69,6 +68,7 @@ const EditModal = () => {
     }
 
     const updateTypeInput = newType => {
+        console.log(newType)
         setTypeFromInput(newType)
         setTransactionType(newType)
     }
@@ -108,8 +108,8 @@ const EditModal = () => {
     if (idToEdit)
     {
         modalTitle = 'Edit or delete transaction'
-        submitButton = <button onClick={handleUpdateClick}>Update transaction information</button>
-        deleteTransactionElement = <button onClick={handleDeleteClick}>Delete transaction</button>
+        submitButton = <button onClick={handleUpdateClick}>Update information</button>
+        deleteTransactionElement = <button onClick={handleDeleteClick} className='delete'>Delete</button>
         optionTypeInput = null
     }
     else
@@ -134,7 +134,6 @@ const EditModal = () => {
                 </div>
                 
                 <div className="cont-transaction-info">
-                    {deleteTransactionElement}
                     
                     <label htmlFor="transactionName">Name:</label>
                     <input type="text" name='transactionName' autoComplete='off'
@@ -156,6 +155,7 @@ const EditModal = () => {
                     
                     <div className="cont-submit">
                         {submitButton}
+                        {deleteTransactionElement}
                     </div>
                 </div>
             </div>

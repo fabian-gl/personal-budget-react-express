@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react'
 import moneyIn from '../../assets/money-in.png'
 import moneyOut from '../../assets/money-out.png'
 
+const INCOME_TYPE = 1
+const OUTCOME_TYPE = -1
+
 const OptionType = ({onOptionChange, typeFromInput = 0}) => {
 
     const [typeSelected, setTypeSelected] = useState(typeFromInput)
@@ -29,12 +32,12 @@ const OptionType = ({onOptionChange, typeFromInput = 0}) => {
     return (
         <div className='cont-option-type'>
             <img src={moneyIn} alt="" title='income'
-                onClick={() => handleOptionClick(1)} 
-                className={(typeSelected === 2 ? 'option-not-selected' : '')}/>
+                onClick={() => handleOptionClick(INCOME_TYPE)} 
+                className={(typeSelected === OUTCOME_TYPE ? 'option-not-selected' : '')}/>
             
             <img src={moneyOut} alt="" title='outcome'
-                onClick={() => handleOptionClick(2)} 
-                className={(typeSelected === 1 ? 'option-not-selected' : '')}/>
+                onClick={() => handleOptionClick(OUTCOME_TYPE)} 
+                className={(typeSelected === INCOME_TYPE ? 'option-not-selected' : '')}/>
         </div>
     )
 }

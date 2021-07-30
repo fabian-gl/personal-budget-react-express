@@ -3,7 +3,7 @@
     align-items: center;
     width: 100%;
     height: 8vh;
-    background: rgb(235, 235, 235);
+    border-bottom: 2px solid lightgray;
     margin: 1vh 0;
 }
 

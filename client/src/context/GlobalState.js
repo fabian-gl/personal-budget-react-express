@@ -21,13 +21,13 @@ export const GlobalProvider = ({children}) => {
         dispatch({
             type: 'SHOW_MODAL',
             id: id
-          })
+        })
     }
 
     const hideModal = () => {
         dispatch({
             type: 'HIDE_MODAL'
-          })
+        })
     }
 
     const addTransaction = async (name, amount, type, date) => {
@@ -59,14 +59,20 @@ export const GlobalProvider = ({children}) => {
 
         dispatch({
             type: 'SET_LOADING_TRUE'
-          })
-
-        const response = await getSummaryInformationCall()
-
-        dispatch({
-            type: 'GET_SUMMARY_INFORMATION',
-            data: response
-          })
+        })
+        try {
+            const response = await getSummaryInformationCall()
+    
+            dispatch({
+                type: 'GET_SUMMARY_INFORMATION',
+                data: response
+            })
+        } catch (error) {
+            dispatch({
+                type: 'SET_LOADING_FALSE'
+            })
+            alert(error)
+        }
     }
 
     const getAllTransactions = async () => {

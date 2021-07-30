@@ -5,7 +5,7 @@
 .cont-titled-container .cont-title {
     width: 100%;
     min-height: 5vh;
-    border: 2px solid black;
+    border: 2px solid lightgrey;
     border-bottom: none;
     background: grey;
     display: flex;
@@ -23,6 +23,5 @@
 
 .cont-titled-container .cont-content {
     width: 100%;
-    border: 2px solid black;
-    background: lightgrey;
+    border: 2px solid lightgrey;
 }

@@ -28,7 +28,7 @@ export const ajaxCall = (url, method, objParams) => {
         {
           if (xhttp.readyState === 4)
             if (isStatusCodeOk(xhttp.status)) resolve(JSON.parse(xhttp.responseText))
-            else reject('Hubo un problema al enviar la solicitud')
+            else reject('There was a problem handling your request.')
         }
 
         if (objParams)

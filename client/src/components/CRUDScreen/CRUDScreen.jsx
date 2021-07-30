@@ -26,8 +26,10 @@ const CRUDScreen = () => {
     return (
         <div className='cont-crud'>
             {modal}
-            <button onClick={handleButtonClick}>Add new Transaction</button>
-            <TransactionFilters onFiltersChange={onFiltersChange} />
+            <div className="cont-sup">
+                <TransactionFilters onFiltersChange={onFiltersChange} />
+                <button onClick={handleButtonClick}>Add new Transaction</button>
+            </div>
             <div className="cont-transaction-list">
                 <TransactionList loading={loading} editable={true} title={'Transactions'} transactions={transactions.filter(transaction => filtersArray.includes(transaction.type))} />
             </div>

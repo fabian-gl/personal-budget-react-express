@@ -15,9 +15,8 @@ const TransactionFilters = ({onFiltersChange}) => {
     
     return (
         <div className='cont-filters'>
-            <h3>Showing</h3>
             <div>
-                <label>Incomes:
+                <label>INCOMES:
                     <input type='checkbox' 
                         className='check-filter'
                         defaultChecked={true}
@@ -25,7 +24,7 @@ const TransactionFilters = ({onFiltersChange}) => {
                         name='filterIncomes' 
                         onChange={handleCheckboxChange} />
                 </label>
-                <label>Outcomes:
+                <label>OUTCOMES:
                     <input type='checkbox' 
                         className='check-filter'
                         defaultChecked={true}
