@@ -1,5 +1,6 @@
 
 const AppReducer = (state, action) => {
+    
     switch(action.type)
     {
         case 'SHOW_MODAL':
@@ -22,12 +23,8 @@ const AppReducer = (state, action) => {
                 balance: 0,
                 loading: true
             }
-        case 'SET_LOADING_FALSE':
-            return {
-                ...state,
-                loading: false
-            }
-        case 'GET_SUMMARY_INFORMATION':
+
+        case 'SET_SUMMARY_INFORMATION':
             return {
                 ...state,
                 latestTransactions: action.data.latestTransactions,
@@ -35,7 +32,7 @@ const AppReducer = (state, action) => {
                 loading: false
             }
 
-        case 'GET_ALL_TRANSACTIONS':
+        case 'SET_ALL_TRANSACTIONS':
             return {
                 ...state,
                 transactions: action.data.transactions,

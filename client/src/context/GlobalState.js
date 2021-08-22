@@ -1,7 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import AppReducer from './AppReducer'
-import { addTransactionCall, getSummaryInformationCall, getTransactionsCall, deleteTransactionCall, updateTransactionCall } from '../serverCalls'
-
+import * as apiCalls from '../apiCalls'
 
 const initialState = {
     latestTransactions: [],
@@ -32,61 +31,78 @@ export const GlobalProvider = ({children}) => {
 
     const addTransaction = async (name, amount, type, date) => {
 
-        const response = await addTransactionCall(name, amount, type, date)
-
-        console.log(response)
-        getAllTransactions()
+        try {
+            await apiCalls.addTransaction(name, amount, type, date)
+            getAllTransactions()
+        } catch (error) {
+            alert('Sorry, there was a problem adding the transaction')
+        }
     }
 
     const updateTransaction = async (id, name, amount, date) => {
 
-        const response = await updateTransactionCall(id, name, amount, date)
-
-        console.log(response)
-        getAllTransactions()
+        try {
+            await apiCalls.updateTransaction(id, name, amount, date)
+            getAllTransactions()
+        } catch (error) {
+            alert('Sorry, there was a problem updating the transaction')
+        }
     }
 
     const deleteTransaction = async id => {
-
-        const response = await deleteTransactionCall(id)
-
-        console.log(response)
-        getAllTransactions()
-
+        try {
+            await apiCalls.deleteTransaction(id)
+            getAllTransactions()
+        } catch (error) {
+            alert('Sorry, there was a problem deleting the transaction')
+        }
     }
 
     const getSummaryInformation = async () => {
 
-        dispatch({
-            type: 'SET_LOADING_TRUE'
-        })
         try {
-            const response = await getSummaryInformationCall()
-    
             dispatch({
-                type: 'GET_SUMMARY_INFORMATION',
-                data: response
+                type: 'SET_LOADING_TRUE'
+            })
+
+            const response = await apiCalls.getSummaryInformation()
+            dispatch({
+                type: 'SET_SUMMARY_INFORMATION',
+                data: response.data
             })
         } catch (error) {
             dispatch({
-                type: 'SET_LOADING_FALSE'
+                type: 'SET_SUMMARY_INFORMATION',
+                data: {
+                    balance: 0,
+                    latestTransactions: []
+                }
             })
-            alert(error)
+
+            alert('Sorry, there was a problem fetching the data')
         }
     }
 
     const getAllTransactions = async () => {
 
-        dispatch({
-            type: 'SET_LOADING_TRUE'
-          })
-
-        const response = await getTransactionsCall()
-
-        dispatch({
-            type: 'GET_ALL_TRANSACTIONS',
-            data: response
-          })
+        try {
+            dispatch({
+                type: 'SET_LOADING_TRUE'
+              })
+    
+            const response = await apiCalls.getTransactions()
+    
+            dispatch({
+                type: 'SET_ALL_TRANSACTIONS',
+                data: response.data
+              })
+        } catch (error) {
+            dispatch({
+                type: 'GET_ALL_TRANSACTIONS',
+                data: {transactions: []}
+              })            
+            alert('Sorry, there was a problem fetching the data')
+        }
     }
 
     return (

@@ -16,29 +16,3 @@ export const formatAmount = amount => {
 }
 
 export const isNegative = amount => Number(amount) < 0
-
-export const ajaxCall = (url, method, objParams) => {
-    return new Promise ((resolve, reject) => {
-        const xhttp = new XMLHttpRequest()
-
-        xhttp.open(method, url, true)
-        xhttp.setRequestHeader('cors', 'cors')
-        
-        xhttp.onreadystatechange = () => 
-        {
-          if (xhttp.readyState === 4)
-            if (isStatusCodeOk(xhttp.status)) resolve(JSON.parse(xhttp.responseText))
-            else reject('There was a problem handling your request.')
-        }
-
-        if (objParams)
-        {
-            xhttp.setRequestHeader('Content-Type', 'application/json')
-            xhttp.send(JSON.stringify(objParams))
-        }
-        else xhttp.send()
-
-    })
-}
-
-const isStatusCodeOk = (statusCode) => statusCode >= 200 && statusCode < 300

@@ -6,9 +6,9 @@
 }
 
 .cont-spinner .spinner {
-    border: 2vh solid #f3f3f3;
+    border: 1vh solid #f3f3f3;
     border-radius: 50%;
-    border-top: 2vh solid grey;
+    border-top: 1vh solid grey;
     width: 10vh;
     height: 10vh;
     animation: spin 2s linear infinite;

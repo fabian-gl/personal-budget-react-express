@@ -114,7 +114,7 @@ exports.deleteTransaction =  (req, res, next) => {
     const params = {
         id: req.body.id || null
     }
-
+    console.log(params)
     const validationResult = validateParams(params)
 
     if (!validationResult.valid)
