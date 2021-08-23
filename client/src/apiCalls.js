@@ -15,7 +15,7 @@ export const deleteTransaction = id => {
 }
 
 export const getSummaryInformation = () => {
-    return axios.get(`${apiRootUrl}/api/v1/transactions/summary`)
+    return axios.get(`${apiRootUrl}/api/v1/transactions/summmary`)
 }
 
 export const getTransactions = async () => {

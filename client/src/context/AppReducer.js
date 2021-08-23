@@ -1,8 +1,27 @@
 
 const AppReducer = (state, action) => {
-    
+
     switch(action.type)
     {
+        case 'SET_ALERT':
+            return {
+                ...state,
+                alert: {
+                    showing: true,
+                    message: action.message,
+                    error: action.error
+                }
+            }
+
+        case 'HIDE_ALERT':
+            return {
+                ...state,
+                alert: {
+                    ...state.alert,
+                    showing: false,
+                }
+            }
+
         case 'SHOW_MODAL':
             return {
                 ...state,

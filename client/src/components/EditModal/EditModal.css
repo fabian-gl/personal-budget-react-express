@@ -31,7 +31,8 @@
 @media (max-width: 500px) {
     .cont-modal {
         width: 100vw;
-        height: 60vh;
+        height: 89%;
+        bottom: 0;
     }
     .cont-modal .cont-transaction-info .cont-inner-transaction-info {
         width: 90%;

@@ -8,13 +8,26 @@ const initialState = {
     balance: 0,
     loading: false,
     showingModal: false,
-    idToEdit: undefined
+    idToEdit: undefined,
+    alert: {message: 'Holisss', showing: false}
 }
 
 export const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const setAlert = (message, error = true) => {
+        dispatch({
+            type: 'SET_ALERT',
+            message,
+            error
+        })
+    }
+
+    const dismissAlert = () => {
+        dispatch({ type: 'HIDE_ALERT' })
+    }
 
     const showModal = id => {
         dispatch({
@@ -35,7 +48,7 @@ export const GlobalProvider = ({children}) => {
             await apiCalls.addTransaction(name, amount, type, date)
             getAllTransactions()
         } catch (error) {
-            alert('Sorry, there was a problem adding the transaction')
+            setAlert('Sorry, there was a problem adding the transaction')
         }
     }
 
@@ -45,7 +58,7 @@ export const GlobalProvider = ({children}) => {
             await apiCalls.updateTransaction(id, name, amount, date)
             getAllTransactions()
         } catch (error) {
-            alert('Sorry, there was a problem updating the transaction')
+            setAlert('Sorry, there was a problem updating the transaction')
         }
     }
 
@@ -54,16 +67,14 @@ export const GlobalProvider = ({children}) => {
             await apiCalls.deleteTransaction(id)
             getAllTransactions()
         } catch (error) {
-            alert('Sorry, there was a problem deleting the transaction')
+            setAlert('Sorry, there was a problem deleting the transaction')
         }
     }
 
     const getSummaryInformation = async () => {
 
         try {
-            dispatch({
-                type: 'SET_LOADING_TRUE'
-            })
+            dispatch({ type: 'SET_LOADING_TRUE' })
 
             const response = await apiCalls.getSummaryInformation()
             dispatch({
@@ -79,16 +90,14 @@ export const GlobalProvider = ({children}) => {
                 }
             })
 
-            alert('Sorry, there was a problem fetching the data')
+            setAlert('Sorry, there was a problem fetching the data')
         }
     }
 
     const getAllTransactions = async () => {
 
         try {
-            dispatch({
-                type: 'SET_LOADING_TRUE'
-              })
+            dispatch({ type: 'SET_LOADING_TRUE' })
     
             const response = await apiCalls.getTransactions()
     
@@ -96,12 +105,13 @@ export const GlobalProvider = ({children}) => {
                 type: 'SET_ALL_TRANSACTIONS',
                 data: response.data
               })
+
         } catch (error) {
             dispatch({
                 type: 'GET_ALL_TRANSACTIONS',
                 data: {transactions: []}
               })            
-            alert('Sorry, there was a problem fetching the data')
+            setAlert('Sorry, there was a problem fetching the data')
         }
     }
 
@@ -113,6 +123,9 @@ export const GlobalProvider = ({children}) => {
             loading: state.loading,
             showingModal: state.showingModal,
             idToEdit: state.idToEdit,
+            alert: state.alert,
+            dismissAlert,
+            setAlert,
             showModal,
             hideModal,
             addTransaction,
