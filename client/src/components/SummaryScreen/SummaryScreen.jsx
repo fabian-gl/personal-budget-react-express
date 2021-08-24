@@ -13,12 +13,9 @@ const SummaryScreen = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const handleClick = () => {
-        setAlert('ffffff ffffff ffffff ffffff ffffff ffffff ffffff', false)
-    }
     return (
         <div className='cont-summary'>
-            <div className="cont-balance" onClick={handleClick}>
+            <div className="cont-balance">
                 <Balance balance={balance} />
             </div>
             <div className="cont-transaction-list">

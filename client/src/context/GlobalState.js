@@ -47,6 +47,7 @@ export const GlobalProvider = ({children}) => {
         try {
             await apiCalls.addTransaction(name, amount, type, date)
             getAllTransactions()
+            setAlert('Transaction added', false)
         } catch (error) {
             setAlert('Sorry, there was a problem adding the transaction')
         }
@@ -57,6 +58,7 @@ export const GlobalProvider = ({children}) => {
         try {
             await apiCalls.updateTransaction(id, name, amount, date)
             getAllTransactions()
+            setAlert('Transaction updated', false)
         } catch (error) {
             setAlert('Sorry, there was a problem updating the transaction')
         }
@@ -66,6 +68,7 @@ export const GlobalProvider = ({children}) => {
         try {
             await apiCalls.deleteTransaction(id)
             getAllTransactions()
+            setAlert('Transaction deleted', false)
         } catch (error) {
             setAlert('Sorry, there was a problem deleting the transaction')
         }
