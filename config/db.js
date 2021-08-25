@@ -1,13 +1,3 @@
-// const mysql = require('mysql')
-
-// let dbConnection = null
-
-
-// const getDbConnection = () => {
-//     if (dbConnection) return dbConnection
-//     console.log('The connection to the db is not open yet, call initDb() first')
-// }
-
 const { Sequelize } = require('sequelize')
 const { initTransactionModel } = require('../models/Transaction')
 

@@ -67,6 +67,7 @@ export const GlobalProvider = ({children}) => {
     const deleteTransaction = async id => {
         try {
             await apiCalls.deleteTransaction(id)
+            
             getAllTransactions()
             setAlert('Transaction deleted', false)
         } catch (error) {

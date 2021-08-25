@@ -1,8 +1,11 @@
-const { getDbConnection } = require('../config/db')
+const { getTransactionModel } = require('../models/Transaction')
+
 
 // Update a transaction
 // route: PUT /api/v1/transactions
 exports.updateTransaction = (req, res, next) => {
+
+    const Transaction = getTransactionModel()
 
     const params = {
         id: req.body.id || null
@@ -20,34 +23,32 @@ exports.updateTransaction = (req, res, next) => {
         return
     }
 
-    const query = prepareUpdateQuery(params)
+    Transaction.findByPk(params.id)
+    .then(transaction => {
+        if (transaction === null) res.status(404).send({error: 'Transaction not found'})
+        else
+        {
+            const {id, ...updatableParams} = params 
 
-    queryPromise(query)
-    .then(result => {
-        res.status(200).json({result: result})
+            for (const key in updatableParams) transaction[key] = updatableParams[key]
+            
+            transaction.save()
+            .then(() => {
+                res.status(200).json({result: 'Transaction updated'})
+            })
+        }
     })
     .catch(err => {
         res.status(500).json({error: `Couldn't update transaction: ${err}`})
     })
-
 }
-
-const prepareUpdateQuery = (params) => {
-
-    const {id, ...updatableParams} = params 
-    let setClause = ''
-
-    for (const key in updatableParams)
-        setClause += `${(setClause === '' ? '' : ', ')}${key} = '${updatableParams[key]}'`
-
-    return `UPDATE transactions SET ${setClause} WHERE id = ${id}`
-}
-
 
 
 // Add a new transaction
 // route: POST /api/v1/transactions
 exports.addTransaction = (req, res, next) => {
+
+    const Transaction = getTransactionModel()
 
     const params = {
         name: req.body.name,
@@ -64,11 +65,9 @@ exports.addTransaction = (req, res, next) => {
         return
     }
 
-    const query = `INSERT INTO transactions (name, amount, type, date) VALUES ('${params.name}', '${params.amount}', '${params.type}', '${params.date}')`
-
-    queryPromise(query)
-    .then(result => {
-        res.status(200).json({result: result})
+    Transaction.create(params)
+    .then(() => {
+        res.status(200).json({message: 'Transaction created'})
     })
     .catch(err => {
         res.status(500).json({error: `Couldn't insert transaction: ${err}`})
@@ -108,12 +107,14 @@ const validateParams = params => {
 
 // delete the transaction corresponding to the id sent
 // route: DELETE /api/v1/transactions
-exports.deleteTransaction =  (req, res, next) => {
+exports.deleteTransaction = (req, res, next) => {
+
+    const Transaction = getTransactionModel()
 
     const params = {
         id: req.body.id || null
     }
-    console.log(params)
+
     const validationResult = validateParams(params)
 
     if (!validationResult.valid)
@@ -122,9 +123,16 @@ exports.deleteTransaction =  (req, res, next) => {
         return
     }
 
-    queryPromise(`DELETE FROM transactions WHERE id=${params.id}`)
-    .then(result => {
-        res.status(200).json({result: result})
+    Transaction.findByPk(params.id)
+    .then(transaction => {
+        if (transaction === null) res.status(404).send({error: 'Transaction not found'})
+        else
+        {
+            transaction.destroy()
+            .then(() => {
+                res.status(200).json({result: 'Transaction deleted'})
+            })
+        }
     })
     .catch(err => {
         res.status(500).json({error: `Couldn't delete transaction: ${err}`})
@@ -136,55 +144,52 @@ exports.deleteTransaction =  (req, res, next) => {
 // route: GET /api/v1/transactions
 exports.getSummaryInfo = (req, res, next) => {
 
-    const latestTransactions = queryPromise('SELECT * FROM transactions ORDER BY id DESC LIMIT 10')
-    const balance = queryPromise('SELECT SUM(amount) FROM transactions')
+    const Transaction = getTransactionModel()
 
-    Promise.all([latestTransactions, balance]).then(([latestTransactionsResult, balanceResult]) => {  
-        const extractedBalance = getValueFromSqlResultObject(balanceResult) || 0
+    Transaction.findAll({
+        order: [
+            ['date','desc'],
+            ['createdAt', 'desc']
+        ]
+    })
+    .then( result => {
+        
+        const data = result.map(d => d.toJSON())
+        const balance = data.reduce((acum, actual) => parseFloat(actual.amount) + acum, 0)
+        const latestTransactions = result.slice(0, 10)
+
         // timeout included to simulate server delays
         setTimeout(() => {
-            res.status(200).json({latestTransactions: latestTransactionsResult, balance: extractedBalance})
+            res.status(200).json({latestTransactions, balance})
         }, 1000)
     })
     .catch(err => {
-        res.status(500).json({error: `Couldn't retrieve transaction: ${err}`})
+        res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
     })
 
 }
 
-const getValueFromSqlResultObject = result => Object.values(result[0])[0]
 
 // get all transactions
 // route: GET /api/v1/transactions
-exports.getTransactions = (req, res, next) => {
-    const {getTransactionModel} = require('../models/Transaction')
+exports.getTransactions = async (req, res, next) => {
+
     const Transaction = getTransactionModel()
 
-    Transaction.findAll({})
+    Transaction.findAll({
+        order: [
+            ['date', 'desc'],
+            ['createdAt', 'desc']
+        ]
+    })
     .then(result => {
-        res.status(200).json({transactions: result})
+        // timeout included to simulate server delays
+        setTimeout(() => {
+            res.status(200).json({transactions: result})
+        }, 1000)
     })
-    // queryPromise('SELECT * FROM transactions ORDER BY id DESC')
-    // .then(result => {
-    //     // timeout included to simulate server delays
-    //     setTimeout(() => {
-    //         res.status(200).json({transactions: result})
-    //     }, 1000)
-    // })
-    // .catch(err => {
-    //     res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
-    // })
-
-}
-
-const queryPromise = (sqlQuery) => {
-
-    return new Promise ((resolve, reject) => {
-        const dbConnection = getDbConnection()
-
-        dbConnection.query(sqlQuery, (err, result) => {
-            if (err) reject(err)
-            resolve(result)
-        })
+    .catch(err => {
+        res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
     })
+
 }
