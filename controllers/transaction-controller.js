@@ -3,74 +3,159 @@ const { getTransactionModel } = require('../models/Transaction')
 
 // Update a transaction
 // route: PUT /api/v1/transactions
-exports.updateTransaction = (req, res, next) => {
+exports.updateTransaction = async (req, res, next) => {
 
-    const Transaction = getTransactionModel()
+    try {
+        const Transaction = getTransactionModel()
 
-    const params = {
-        id: req.body.id || null
-    }
-
-    const possibleParams = ['name', 'amount', 'type', 'date']
-
-    for (const key of possibleParams) if (req.body[key]) params[key] = req.body[key]
-
-    const validationResult = validateParams(params)
-
-    if (!validationResult.valid)
-    {
-        res.status(400).json({ok: false, errors: validationResult.errors})
-        return
-    }
-
-    Transaction.findByPk(params.id)
-    .then(transaction => {
-        if (transaction === null) res.status(404).send({error: 'Transaction not found'})
+        const params = {
+            id: req.body.id || null
+        }
+    
+        const possibleParams = ['name', 'amount', 'type', 'date']
+    
+        for (const key of possibleParams) if (req.body[key]) params[key] = req.body[key]
+    
+        const validationResult = validateParams(params)
+    
+        if (!validationResult.valid)
+        {
+            res.status(400).json({ok: false, errors: validationResult.errors})
+            return
+        }
+    
+        transactionFound = await Transaction.findByPk(params.id)
+    
+        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
         else
         {
             const {id, ...updatableParams} = params 
 
-            for (const key in updatableParams) transaction[key] = updatableParams[key]
+            for (const key in updatableParams) transactionFound[key] = updatableParams[key]
             
-            transaction.save()
-            .then(() => {
-                res.status(200).json({result: 'Transaction updated'})
-            })
+            await transactionFound.save()
+            res.status(200).json({message: 'Transaction updated'})
         }
-    })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't update transaction: ${err}`})
-    })
+    } catch (error) {
+        res.status(500).json({error: `Couldn't update transaction: ${error}`})
+    }
 }
 
 
 // Add a new transaction
 // route: POST /api/v1/transactions
-exports.addTransaction = (req, res, next) => {
+exports.addTransaction = async (req, res, next) => {
 
+    try {
+        const Transaction = getTransactionModel()
+
+        const params = {
+            name: req.body.name,
+            amount: req.body.amount,
+            type: req.body.type,
+            date: req.body.date
+        }
+
+        const validationResult = validateParams(params)
+
+        if (!validationResult.valid)
+        {
+            res.status(400).json({ok: false, errors: validationResult.errors})
+            return
+        }
+
+        await Transaction.create(params)
+        res.status(200).json({message: 'Transaction created'})
+    } catch (error) {
+        res.status(500).json({error: `Couldn't add transaction: ${error}`})
+    }
+}
+
+
+// delete the transaction corresponding to the id sent
+// route: DELETE /api/v1/transactions
+exports.deleteTransaction = async (req, res, next) => {
+
+    try {
+        const Transaction = getTransactionModel()
+
+        const params = {
+            id: req.body.id || null
+        }
+
+        const validationResult = validateParams(params)
+
+        if (!validationResult.valid)
+        {
+            res.status(400).json({ok: false, errors: validationResult.errors})
+            return
+        }
+
+        transactionFound = await Transaction.findByPk(params.id)
+        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
+        else
+        {
+            await transactionFound.destroy()
+            res.status(200).json({result: 'Transaction deleted'})
+        }
+
+    } catch (error) {
+        res.status(500).json({error: `Couldn't delete transaction: ${error}`})
+    }
+}
+
+
+// get latest transactions and balance
+// route: GET /api/v1/transactions
+exports.getSummaryInfo = async (req, res, next) => {
+
+    try {
+
+        const transactions = await getAllTransactions()
+
+        const data = transactions.map(d => d.toJSON())
+        const latestTransactions = data.slice(0, 10)
+        const balance = data.reduce((acum, actual) => parseFloat(actual.amount) + acum, 0)
+
+        res.status(200).json({latestTransactions, balance})
+    } catch (error) {
+        res.status(500).json({error: `Couldn't retrieve transactions: ${error}`})
+    }
+}
+
+
+// get all transactions
+// route: GET /api/v1/transactions
+exports.getTransactions = async (req, res, next) => {
+
+    try {
+
+        const transactions = await getAllTransactions()
+        res.status(200).json({transactions})
+
+    } catch (error) {
+        res.status(500).json({error: `Couldn't retrieve transactions: ${error}`})
+    }
+}
+
+const getAllTransactions = async () => {
     const Transaction = getTransactionModel()
 
-    const params = {
-        name: req.body.name,
-        amount: req.body.amount,
-        type: req.body.type,
-        date: req.body.date
-    }
-
-    const validationResult = validateParams(params)
-
-    if (!validationResult.valid)
-    {
-        res.status(400).json({ok: false, errors: validationResult.errors})
-        return
-    }
-
-    Transaction.create(params)
-    .then(() => {
-        res.status(200).json({message: 'Transaction created'})
+    const transactions = await Transaction.findAll({
+        order: [
+            ['date', 'desc'],
+            ['createdAt', 'desc']
+        ]
     })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't insert transaction: ${err}`})
+
+    await simulateServerDelay()
+    return transactions
+}
+
+const simulateServerDelay = () => {
+    const DELAY_IN_MILLISECONDS = 1000
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, DELAY_IN_MILLISECONDS)
     })
 }
 
@@ -81,7 +166,7 @@ const validateParams = params => {
     Object.keys(params).forEach(key => {
         const value = params[key]
 
-        if (!value) errors.push(`The transaction must have a '${key}' parameter`)
+        if (!value) errors.push(`The request must have a '${key}' parameter`)
 
         if (key === 'id')
             if (!Number.isInteger(value) || Number(value) <= 0) errors.push('The id must be a positive integer')
@@ -102,94 +187,4 @@ const validateParams = params => {
 
     const valid = errors.length === 0
     return {valid, errors}
-}
-
-
-// delete the transaction corresponding to the id sent
-// route: DELETE /api/v1/transactions
-exports.deleteTransaction = (req, res, next) => {
-
-    const Transaction = getTransactionModel()
-
-    const params = {
-        id: req.body.id || null
-    }
-
-    const validationResult = validateParams(params)
-
-    if (!validationResult.valid)
-    {
-        res.status(400).json({ok: false, errors: validationResult.errors})
-        return
-    }
-
-    Transaction.findByPk(params.id)
-    .then(transaction => {
-        if (transaction === null) res.status(404).send({error: 'Transaction not found'})
-        else
-        {
-            transaction.destroy()
-            .then(() => {
-                res.status(200).json({result: 'Transaction deleted'})
-            })
-        }
-    })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't delete transaction: ${err}`})
-    })
-}
-
-
-// get latest transactions and balance
-// route: GET /api/v1/transactions
-exports.getSummaryInfo = (req, res, next) => {
-
-    const Transaction = getTransactionModel()
-
-    Transaction.findAll({
-        order: [
-            ['date','desc'],
-            ['createdAt', 'desc']
-        ]
-    })
-    .then( result => {
-        
-        const data = result.map(d => d.toJSON())
-        const balance = data.reduce((acum, actual) => parseFloat(actual.amount) + acum, 0)
-        const latestTransactions = result.slice(0, 10)
-
-        // timeout included to simulate server delays
-        setTimeout(() => {
-            res.status(200).json({latestTransactions, balance})
-        }, 1000)
-    })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
-    })
-
-}
-
-
-// get all transactions
-// route: GET /api/v1/transactions
-exports.getTransactions = async (req, res, next) => {
-
-    const Transaction = getTransactionModel()
-
-    Transaction.findAll({
-        order: [
-            ['date', 'desc'],
-            ['createdAt', 'desc']
-        ]
-    })
-    .then(result => {
-        // timeout included to simulate server delays
-        setTimeout(() => {
-            res.status(200).json({transactions: result})
-        }, 1000)
-    })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
-    })
-
 }
