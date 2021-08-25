@@ -1,6 +1,5 @@
 const { getDbConnection } = require('../config/db')
 
-
 // Update a transaction
 // route: PUT /api/v1/transactions
 exports.updateTransaction = (req, res, next) => {
@@ -155,21 +154,26 @@ exports.getSummaryInfo = (req, res, next) => {
 
 const getValueFromSqlResultObject = result => Object.values(result[0])[0]
 
-
 // get all transactions
 // route: GET /api/v1/transactions
 exports.getTransactions = (req, res, next) => {
+    const {getTransactionModel} = require('../models/Transaction')
+    const Transaction = getTransactionModel()
 
-    queryPromise('SELECT * FROM transactions ORDER BY id DESC')
+    Transaction.findAll({})
     .then(result => {
-        // timeout included to simulate server delays
-        setTimeout(() => {
-            res.status(200).json({transactions: result})
-        }, 1000)
+        res.status(200).json({transactions: result})
     })
-    .catch(err => {
-        res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
-    })
+    // queryPromise('SELECT * FROM transactions ORDER BY id DESC')
+    // .then(result => {
+    //     // timeout included to simulate server delays
+    //     setTimeout(() => {
+    //         res.status(200).json({transactions: result})
+    //     }, 1000)
+    // })
+    // .catch(err => {
+    //     res.status(500).json({error: `Couldn't retrieve transactions: ${err}`})
+    // })
 
 }
 
