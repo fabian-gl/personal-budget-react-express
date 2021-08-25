@@ -33,4 +33,6 @@ initDb().then(() => {
     console.log(`Couldn't connect to database: ${err}`)
 })
 
+
+
 app.use('/api/v1/transactions', require('./routes/transactions'))

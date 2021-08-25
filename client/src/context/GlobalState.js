@@ -103,7 +103,6 @@ export const GlobalProvider = ({children}) => {
             dispatch({ type: 'SET_LOADING_TRUE' })
     
             const response = await apiCalls.getTransactions()
-    
             dispatch({
                 type: 'SET_ALL_TRANSACTIONS',
                 data: response.data

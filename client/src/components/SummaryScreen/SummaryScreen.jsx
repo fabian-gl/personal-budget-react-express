@@ -6,7 +6,7 @@ import { useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState'
 
 const SummaryScreen = () => {
-    const { getSummaryInformation, latestTransactions, balance, loading, setAlert } = useContext(GlobalContext);
+    const { getSummaryInformation, latestTransactions, balance, loading } = useContext(GlobalContext);
     
     useEffect( () => {
         getSummaryInformation()

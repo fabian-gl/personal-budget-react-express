@@ -1,38 +1,36 @@
-const mysql = require('mysql')
+// const mysql = require('mysql')
 
-let dbConnection = null
+// let dbConnection = null
 
-const initDb = () => {
-    return new Promise ((resolve, reject) => {
-        if (dbConnection)
-        {
-            console.log('Database already connected')
-            resolve()
-        }
-        dbConnection = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASSWORD,
-            database: process.env.DATABASE_NAME,
-            dateStrings: 'date'
-        })
-        dbConnection.connect(error => {
-            if (error)
+
+// const getDbConnection = () => {
+//     if (dbConnection) return dbConnection
+//     console.log('The connection to the db is not open yet, call initDb() first')
+// }
+
+const { Sequelize } = require('sequelize')
+const { initTransactionModel } = require('../models/Transaction')
+
+const initDb = async () => {
+    return new Promise((resolve, reject) => {
+        const sequelize = new Sequelize(
+            process.env.DATABASE_NAME, 
+            process.env.DATABASE_USER, 
+            process.env.DATABASE_PASSWORD,
             {
-                dbConnection = null
-                reject(error)
-            }
+                host: process.env.DATABASE_HOST,
+                dialect: 'mysql'
+            })
+        sequelize.authenticate()
+        .then(() => {
+            initTransactionModel(sequelize)
             resolve()
         })
+        .catch(reject)
     })
-}
 
-const getDbConnection = () => {
-    if (dbConnection) return dbConnection
-    console.log('The connection to the db is not open yet, call initDb() first')
 }
 
 module.exports = {
-    initDb,
-    getDbConnection
+    initDb
 }

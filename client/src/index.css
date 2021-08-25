@@ -22,6 +22,7 @@ html, body {
 
 body {
   position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
