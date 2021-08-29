@@ -36,3 +36,4 @@ initDb().then(() => {
 
 
 app.use('/api/v1/transactions', require('./routes/transactions'))
+app.use('/api/v1/user', require('./routes/user'))

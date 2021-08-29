@@ -30,6 +30,7 @@ exports.initTransactionModel = async sequelize => {
         },
         user_id: {
             allowNull: true, // change!
+            default: 1,
             type: DataTypes.INTEGER
         }
     })
