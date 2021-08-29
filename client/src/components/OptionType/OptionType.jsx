@@ -12,7 +12,6 @@ const OptionType = ({onOptionChange, typeFromInput = 0}) => {
 
     const [typeSelected, setTypeSelected] = useState(typeFromInput)
     useEffect(() => {
-        console.log(typeFromInput)
         setTypeSelected(typeFromInput)
     }, [typeFromInput])
     

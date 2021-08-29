@@ -41,7 +41,7 @@ const AppReducer = (state, action) => {
                 ...state,
                 balance: 0,
                 loading: true
-            }
+            }          
 
         case 'SET_SUMMARY_INFORMATION':
             return {

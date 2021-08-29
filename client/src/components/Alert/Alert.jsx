@@ -22,7 +22,6 @@ const Alert = () => {
             setTimeoutHandler(setTimeout(() => {
                 setTimeoutHandler(null)
                 dismissAlert()
-                console.log('effect')
             }, MILLISECONDS_HIDE_ALERT))
         }
         

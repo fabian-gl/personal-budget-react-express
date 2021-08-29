@@ -86,6 +86,7 @@ export const GlobalProvider = ({children}) => {
                 data: response.data
             })
         } catch (error) {
+            console.log(error)
             dispatch({
                 type: 'SET_SUMMARY_INFORMATION',
                 data: {
