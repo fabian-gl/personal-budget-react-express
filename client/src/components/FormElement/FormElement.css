@@ -1,0 +1,24 @@
+
+.cont-input input {
+    border-radius: 2em;
+    padding: 0.5em 1em;
+    outline: none;
+    width: 100%;
+    text-align: center;
+}
+
+/* Hides the label, but it reads with a screen reader */
+.cont-input label {
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+}
+
+.cont-input .validation-error {
+    color: red;
+    margin: 0 1vh 1vh 1vh;
+    text-align: center;
+}

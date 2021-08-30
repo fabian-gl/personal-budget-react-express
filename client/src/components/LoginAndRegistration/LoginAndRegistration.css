@@ -1,0 +1,79 @@
+
+.cont-login-registration {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 5vh 2vh;
+    border: 2px solid lightgrey;
+    min-height: 40vh;
+}
+
+.cont-login-registration .form-user {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1.5vh;
+    column-gap: 4vh;
+    padding: 0 2vh;
+}
+
+.cont-login-registration h2 {
+    margin-bottom: 5vh;
+    text-align: center;
+}
+
+
+.cont-login-registration .btn-submit {
+    margin-top: 5vh;
+    background-color: lightgray;
+    color: grey;
+    transition: color, background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in;
+    padding: 0.8em 1.6em;
+    border-radius: 2em;
+}
+
+.cont-login-registration .btn-submit.enabled {
+    background-color: rgb(191, 255, 197);
+    color: black;
+    font-weight: bold;
+    transition: color, background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in;
+    cursor: pointer;
+}
+
+.cont-login-registration .cont-change-form {
+    margin-top: 5vh;
+    display: flex;
+    align-items: center;
+}
+
+.cont-login-registration .cont-change-form button{
+    margin-left: 3vh;
+    padding: 0.5vh;
+}
+
+
+@media (max-width: 1000px)
+{
+    .cont-login-registration .form-user {
+        column-gap: 2vh;
+        padding: 0vh;
+    }
+}
+
+@media (max-width: 600px)
+{
+    .cont-login-registration .form-user {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .cont-login-registration {
+        border: none;
+        padding: 2vh 2vh;
+        height: 100%;
+    }
+}

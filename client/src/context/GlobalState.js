@@ -6,6 +6,7 @@ const initialState = {
     latestTransactions: [],
     transactions: [],
     balance: 0,
+    userLogged: false,
     loading: false,
     showingModal: false,
     idToEdit: undefined,
@@ -16,6 +17,42 @@ export const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const userRegister = async userData => {
+
+        try {
+            const response = await apiCalls.userRegister(userData)
+            console.log(response)
+            setAlert('Registration successful', false)
+        } catch (error) {
+            setAlert("Sorry, We couldn't sign you in")
+        }
+
+        // dispatch({
+        //     type: 'USER_REGISTER'
+        // })        
+    }
+
+    const userLogin = async userData => {
+        
+        try {
+            const response = await apiCalls.userLogin(userData)
+            console.log(response)
+            setAlert('Login successful', false)
+        } catch (error) {
+            setAlert('Sorry, wrong name or password')
+        }
+
+        dispatch({
+            type: 'USER_LOGIN'
+        })        
+    }
+
+    const userLogout = () => {
+        dispatch({
+            type: 'USER_LOGOUT'
+        })
+    }
 
     const setAlert = (message, error = true) => {
         dispatch({
@@ -128,6 +165,10 @@ export const GlobalProvider = ({children}) => {
             showingModal: state.showingModal,
             idToEdit: state.idToEdit,
             alert: state.alert,
+            userLogged: state.userLogged,
+            userRegister,
+            userLogin,
+            userLogout,
             dismissAlert,
             setAlert,
             showModal,

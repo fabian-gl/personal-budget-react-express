@@ -1,13 +1,21 @@
 import './NavBar.css'
 
+import { useContext } from 'react'
+
 import NavBarItem from '../NavBarItem/NavBarItem'
 import Logo from '../Logo/Logo'
 
+import { GlobalContext } from '../../context/GlobalState'
+
+
 const NavBar = () => {
-    const menu = [
+
+    const { userLogged, userLogout } = useContext(GlobalContext);
+
+    const menu = ( userLogged ? [
         {name: 'Summary', route: '/'},
         {name: 'Edit Transactions', route: '/crud'}
-    ]
+    ] : [])
 
     const toggleMenuCelu = () => document.querySelector('.menu-cellphone').classList.toggle('hidden')
 

@@ -8,6 +8,10 @@ exports.userRegistration = (req, res) => {
     res.send('register')
 }
 
+exports.userLogout = (req, res) => {
+    res.send('logout')
+}
+
 // // Update a transaction
 // // route: PUT /api/v1/transactions
 // exports.updateTransaction = async (req, res, next) => {

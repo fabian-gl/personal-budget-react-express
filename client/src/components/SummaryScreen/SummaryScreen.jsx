@@ -1,12 +1,19 @@
 import './SummaryScreen.css'
 
-import TransactionList from "../TransactionList/TransactionList";
-import Balance from '../Balance/Balance';
 import { useEffect, useContext } from 'react';
+import { useHistory } from "react-router-dom"
+
 import { GlobalContext } from '../../context/GlobalState'
 
+import TransactionList from "../TransactionList/TransactionList";
+import Balance from '../Balance/Balance';
+
 const SummaryScreen = () => {
-    const { getSummaryInformation, latestTransactions, balance, loading } = useContext(GlobalContext);
+
+    const { getSummaryInformation, latestTransactions, balance, loading, userLogged } = useContext(GlobalContext);
+    const history = useHistory()
+
+    if(!userLogged) history.push('/login')
     
     useEffect( () => {
         getSummaryInformation()

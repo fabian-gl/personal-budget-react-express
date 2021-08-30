@@ -12,6 +12,10 @@ exports.initUserModel = async sequelize => {
             primaryKey: true,
             type: DataTypes.INTEGER
         },
+        name: {
+            allowNull: false,
+            type: DataTypes.STRING
+        },        
         email: {
             allowNull: false,
             type: DataTypes.STRING

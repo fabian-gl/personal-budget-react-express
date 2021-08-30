@@ -3,6 +3,18 @@ const AppReducer = (state, action) => {
 
     switch(action.type)
     {
+        case 'USER_LOGIN':
+            return {
+                ...state,
+                userLogged: true
+            }
+            
+        case 'USER_LOGOUT':
+            return {
+                ...state,
+                userLogged: false
+            }    
+
         case 'SET_ALERT':
             return {
                 ...state,

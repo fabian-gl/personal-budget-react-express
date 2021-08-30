@@ -21,3 +21,15 @@ export const getSummaryInformation = () => {
 export const getTransactions = async () => {
     return axios.get(`${apiRootUrl}/api/v1/transactions`)
 }
+
+export const userLogin = async userData => {
+    return axios.post(`${apiRootUrl}/api/v1/user/login`, {data: userData})
+}
+
+export const userRegister = async userData => {
+    return axios.post(`${apiRootUrl}/api/v1/user/register`, {data: userData})
+}
+
+export const userLogout = async () => {
+    return axios.post(`${apiRootUrl}/api/v1/user/logout`)
+}
