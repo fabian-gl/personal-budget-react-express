@@ -20,7 +20,7 @@ exports.initUserModel = async sequelize => {
             allowNull: false,
             type: DataTypes.STRING
         },
-        password: {
+        password_hash: {
             allowNull: false,
             type: DataTypes.STRING
         }

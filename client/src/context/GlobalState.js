@@ -21,26 +21,30 @@ export const GlobalProvider = ({children}) => {
     const userRegister = async userData => {
 
         try {
-            const response = await apiCalls.userRegister(userData)
-            console.log(response)
+            await apiCalls.userRegister(userData)
             setAlert('Registration successful', false)
+            return true
         } catch (error) {
-            setAlert("Sorry, We couldn't sign you in")
-        }
+            const errorList = error.response.data.errors || []
+            if (errorList.length) setAlert(errorList[0])
+            else setAlert("Sorry, We couldn't sign you in")
 
-        // dispatch({
-        //     type: 'USER_REGISTER'
-        // })        
+            return false
+        }
     }
 
     const userLogin = async userData => {
         
         try {
             const response = await apiCalls.userLogin(userData)
-            console.log(response)
-            setAlert('Login successful', false)
+            setAlert(response.data.message, false)
+            // Save token
+            return true
         } catch (error) {
-            setAlert('Sorry, wrong name or password')
+            const errorList = error.response.data.errors || []
+            if (errorList.length) setAlert(errorList[0])
+            else setAlert("Sorry, We couldn't log you in")
+            return false
         }
 
         dispatch({

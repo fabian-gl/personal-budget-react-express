@@ -1,11 +1,15 @@
 import './LoginAndRegistration.css'
 
+import { useHistory } from "react-router-dom"
 import { useState, useEffect, useContext } from 'react'
+
 import { GlobalContext } from '../../context/GlobalState'
 import FormElement from '../FormElement/FormElement';
 
 
 const LoginAndRegistration = () => {
+
+    const history = useHistory()
 
     const { userLogin, userRegister } = useContext(GlobalContext);
 
@@ -28,7 +32,6 @@ const LoginAndRegistration = () => {
         setFormElements(createFormElementsObjects(arrayInputNames))
         
     }, [isRegistration])
-
 
     useEffect(() => {
         const emptyObject = formElements.reduce((acum, act) => ({...acum, [act.name]: ''}),{})
@@ -63,9 +66,9 @@ const LoginAndRegistration = () => {
                 if (!value.length) validationObject[key] = 'Please enter a password'
                 else if (value.length < 6) validationObject[key] = 'The password must be at least of 6 characters'
 
-            } else if (key === 'repeatPassword') {
-                if (value !== formElements[index - 1].value) validationObject[key] = 'Passwords do not match'
-            
+            } else if (key === 'repeatPassword' && value !== formElements[index - 1].value) {
+                validationObject[key] = 'Passwords do not match'
+        
             }
         })
 
@@ -85,18 +88,34 @@ const LoginAndRegistration = () => {
         setFormElements(newArray)
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async () => {
         if (validateInputs())
         {
             const userData = formElements.reduce((acum, act) => ({...acum, [act.name]: act.value}),{})
 
-            if (isRegistration) userRegister(userData)
-            else userLogin(userData)
+            if (isRegistration)
+            {
+                const registrationOk = await userRegister(userData)
+                if (registrationOk) 
+                {
+                    setIsRegistration(false)
+                    setShowingErrors(false)
+                }
+            }
+            else 
+            {
+                const loginOk = await userLogin(userData)
+                console.log(loginOk)
+                if (loginOk) history.push('/')
+            }
         }
         else setShowingErrors(true)
     }
 
-    const toggleRegistration = () => setIsRegistration(!isRegistration)
+    const toggleRegistration = () => {
+        setShowingErrors(false)
+        setIsRegistration(!isRegistration)
+    }
 
 
     return (
@@ -117,7 +136,7 @@ const LoginAndRegistration = () => {
             <button className={`btn-submit ${btnEnabled && 'enabled'}`} onClick={handleSubmit}>{(isRegistration ? "Sign up" : "Log in")}</button>
             
             <div className="cont-change-form">
-                <p>{(isRegistration ? "Wanted to log in instead?" : "Don't have a user yet?")}</p>
+                <p>{(isRegistration ? "Wanted to log in instead?" : "Don't have an account yet?")}</p>
                 <button onClick={toggleRegistration}>{(isRegistration ? 'Go to log in form' : 'Sign up')}</button>
             </div>
         </div>

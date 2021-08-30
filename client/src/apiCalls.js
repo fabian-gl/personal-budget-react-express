@@ -23,11 +23,11 @@ export const getTransactions = async () => {
 }
 
 export const userLogin = async userData => {
-    return axios.post(`${apiRootUrl}/api/v1/user/login`, {data: userData})
+    return axios.post(`${apiRootUrl}/api/v1/user/login`, {...userData, })
 }
 
 export const userRegister = async userData => {
-    return axios.post(`${apiRootUrl}/api/v1/user/register`, {data: userData})
+    return axios.post(`${apiRootUrl}/api/v1/user/register`, {...userData})
 }
 
 export const userLogout = async () => {
