@@ -12,7 +12,8 @@ exports.initDb = async () => {
             process.env.DATABASE_PASSWORD,
             {
                 host: process.env.DATABASE_HOST,
-                dialect: 'mysql'
+                dialect: 'mysql',
+                logging: false
             })
         sequelize.authenticate()
         .then(async () => {

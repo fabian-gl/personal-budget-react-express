@@ -24,11 +24,9 @@ export const GlobalProvider = ({children}) => {
             await apiCalls.userRegister(userData)
             setAlert('Registration successful', false)
             return true
+            
         } catch (error) {
-            const errorList = error.response.data.errors || []
-            if (errorList.length) setAlert(errorList[0])
-            else setAlert("Sorry, We couldn't sign you in")
-
+            alertError(error, "Sorry, We couldn't sign you in")
             return false
         }
     }
@@ -38,18 +36,19 @@ export const GlobalProvider = ({children}) => {
         try {
             const response = await apiCalls.userLogin(userData)
             setAlert(response.data.message, false)
-            // Save token
+
+            window.localStorage.setItem('access_token', response.data.token)
+
+            dispatch({
+                type: 'USER_LOGIN'
+            })
             return true
+
         } catch (error) {
-            const errorList = error.response.data.errors || []
-            if (errorList.length) setAlert(errorList[0])
-            else setAlert("Sorry, We couldn't log you in")
+            alertError(error, "Sorry, We couldn't log you in")
             return false
         }
-
-        dispatch({
-            type: 'USER_LOGIN'
-        })        
+     
     }
 
     const userLogout = () => {
@@ -90,7 +89,7 @@ export const GlobalProvider = ({children}) => {
             getAllTransactions()
             setAlert('Transaction added', false)
         } catch (error) {
-            setAlert('Sorry, there was a problem adding the transaction')
+            alertError(error, 'Sorry, there was a problem adding the transaction')
         }
     }
 
@@ -101,7 +100,7 @@ export const GlobalProvider = ({children}) => {
             getAllTransactions()
             setAlert('Transaction updated', false)
         } catch (error) {
-            setAlert('Sorry, there was a problem updating the transaction')
+            alertError(error, 'Sorry, there was a problem updating the transaction')
         }
     }
 
@@ -112,7 +111,7 @@ export const GlobalProvider = ({children}) => {
             getAllTransactions()
             setAlert('Transaction deleted', false)
         } catch (error) {
-            setAlert('Sorry, there was a problem deleting the transaction')
+            alertError(error, 'Sorry, there was a problem deleting the transaction')
         }
     }
 
@@ -126,8 +125,10 @@ export const GlobalProvider = ({children}) => {
                 type: 'SET_SUMMARY_INFORMATION',
                 data: response.data
             })
+
         } catch (error) {
-            console.log(error)
+            alertError(error, 'Sorry, there was a problem fetching the data')
+
             dispatch({
                 type: 'SET_SUMMARY_INFORMATION',
                 data: {
@@ -135,8 +136,6 @@ export const GlobalProvider = ({children}) => {
                     latestTransactions: []
                 }
             })
-
-            setAlert('Sorry, there was a problem fetching the data')
         }
     }
 
@@ -152,12 +151,20 @@ export const GlobalProvider = ({children}) => {
               })
 
         } catch (error) {
+            alertError(error, 'Sorry, there was a problem fetching the data')
+
             dispatch({
-                type: 'GET_ALL_TRANSACTIONS',
+                type: 'SET_ALL_TRANSACTIONS',
                 data: {transactions: []}
               })            
-            setAlert('Sorry, there was a problem fetching the data')
         }
+    }
+
+    function alertError(errorObject, fallbackMessage)
+    {
+        const errorList = errorObject.response.data.errors || []
+        if (errorList.length) setAlert(errorList[0])
+        else setAlert(fallbackMessage)
     }
 
     return (

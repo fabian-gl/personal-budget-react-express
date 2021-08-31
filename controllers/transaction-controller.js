@@ -3,7 +3,7 @@ const { getTransactionModel } = require('../models/Transaction')
 
 // Update a transaction
 // route: PUT /api/v1/transactions
-exports.updateTransaction = async (req, res, next) => {
+exports.update = async (req, res) => {
 
     try {
         const Transaction = getTransactionModel()
@@ -26,7 +26,7 @@ exports.updateTransaction = async (req, res, next) => {
     
         transactionFound = await Transaction.findByPk(params.id)
     
-        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
+        if (transactionFound === null || transactionFound.user_id !== req.userId) res.status(404).send({error: 'Transaction not found'})
         else
         {
             const {id, ...updatableParams} = params 
@@ -44,7 +44,7 @@ exports.updateTransaction = async (req, res, next) => {
 
 // Add a new transaction
 // route: POST /api/v1/transactions
-exports.addTransaction = async (req, res, next) => {
+exports.add = async (req, res) => {
 
     try {
         const Transaction = getTransactionModel()
@@ -64,6 +64,7 @@ exports.addTransaction = async (req, res, next) => {
             return
         }
 
+        params.user_id = req.userId
         await Transaction.create(params)
         res.status(200).json({message: 'Transaction created'})
     } catch (error) {
@@ -74,7 +75,7 @@ exports.addTransaction = async (req, res, next) => {
 
 // delete the transaction corresponding to the id sent
 // route: DELETE /api/v1/transactions
-exports.deleteTransaction = async (req, res, next) => {
+exports.delete = async (req, res) => {
 
     try {
         const Transaction = getTransactionModel()
@@ -92,7 +93,7 @@ exports.deleteTransaction = async (req, res, next) => {
         }
 
         transactionFound = await Transaction.findByPk(params.id)
-        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
+        if (transactionFound === null || transactionFound.user_id !== req.userId) res.status(404).send({error: 'Transaction not found'})
         else
         {
             await transactionFound.destroy()
@@ -107,11 +108,10 @@ exports.deleteTransaction = async (req, res, next) => {
 
 // get latest transactions and balance
 // route: GET /api/v1/transactions
-exports.getSummaryInfo = async (req, res, next) => {
+exports.getSummaryInfo = async (req, res) => {
 
     try {
-
-        const transactions = await getAllTransactions()
+        const transactions = await getAllTransactions(req.userId)
 
         const data = transactions.map(d => d.toJSON())
         const latestTransactions = data.slice(0, 10)
@@ -126,11 +126,10 @@ exports.getSummaryInfo = async (req, res, next) => {
 
 // get all transactions
 // route: GET /api/v1/transactions
-exports.getTransactions = async (req, res, next) => {
+exports.getAll = async (req, res) => {
 
     try {
-
-        const transactions = await getAllTransactions()
+        const transactions = await getAllTransactions(req.userId)
         res.status(200).json({transactions})
 
     } catch (error) {
@@ -138,10 +137,13 @@ exports.getTransactions = async (req, res, next) => {
     }
 }
 
-const getAllTransactions = async () => {
+const getAllTransactions = async (userId) => {
     const Transaction = getTransactionModel()
 
     const transactions = await Transaction.findAll({
+        where: {
+            user_id: userId
+        },
         order: [
             ['date', 'desc'],
             ['createdAt', 'desc']

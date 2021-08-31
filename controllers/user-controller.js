@@ -1,10 +1,10 @@
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const { getUserModel } = require('../models/User')
 
 
-
-exports.userLogin = async (req, res) => {
+exports.login = async (req, res) => {
 
     try {
         const User = getUserModel()
@@ -31,18 +31,21 @@ exports.userLogin = async (req, res) => {
             
             if (authOk)
             {
-                // Deal with tokens
-                res.status(200).json({message: 'Login successful'})
+                jwt.sign({userId: user.id}, 'qwerty321', { expiresIn: '1h' }, (err, token) => {
+                    if (err) throw new Error(err)
+                    res.status(200).json({token, message: 'Login successful'})
+                  })
+                
             }
             else res.status(401).json({ok: false, errors: ['Incorrect email or password']})
 
         }
       
     } catch (error) {
-        res.status(500).json({error: `Couldn't log you in ${error}`})
+        res.status(500).json({error: `Couldn't log you in`})
     }}
 
-exports.userRegistration = async (req, res) => {
+exports.register = async (req, res) => {
     
     try {
         const User = getUserModel()
@@ -82,7 +85,7 @@ exports.userRegistration = async (req, res) => {
     }
 }
 
-exports.userLogout = (req, res) => {
+exports.logout = (req, res) => {
     // res.send('logout')
     res.status(200).json(req.body)
 }
