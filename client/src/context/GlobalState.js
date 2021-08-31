@@ -1,4 +1,8 @@
+
 import React, { createContext, useReducer } from 'react'
+
+import { useHistory } from 'react-router-dom'
+
 import AppReducer from './AppReducer'
 import * as apiCalls from '../apiCalls'
 
@@ -10,13 +14,28 @@ const initialState = {
     loading: false,
     showingModal: false,
     idToEdit: undefined,
-    alert: {message: 'Holisss', showing: false}
+    alert: {message: '', showing: false},
+    userName: ''
 }
 
 export const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const history = useHistory()
+
+    const checkForToken = () => {
+
+        const tokenExists = localStorage.getItem('access_token') !== null
+        if (!tokenExists && state.userLogged) history.push('/login')
+
+        dispatch({
+            type: 'SET_LOGGED',
+            logged: tokenExists
+        })
+        return tokenExists
+    }
 
     const userRegister = async userData => {
 
@@ -37,11 +56,14 @@ export const GlobalProvider = ({children}) => {
             const response = await apiCalls.userLogin(userData)
             setAlert(response.data.message, false)
 
+            dispatch({
+                type: 'SET_USER_NAME',
+                userName: response.data.name
+            })
+
             window.localStorage.setItem('access_token', response.data.token)
 
-            dispatch({
-                type: 'USER_LOGIN'
-            })
+            checkForToken()
             return true
 
         } catch (error) {
@@ -52,9 +74,8 @@ export const GlobalProvider = ({children}) => {
     }
 
     const userLogout = () => {
-        dispatch({
-            type: 'USER_LOGOUT'
-        })
+        localStorage.removeItem('access_token')
+        checkForToken()
     }
 
     const setAlert = (message, error = true) => {
@@ -127,6 +148,7 @@ export const GlobalProvider = ({children}) => {
             })
 
         } catch (error) {
+            if (error.response.status === 401) userLogout()
             alertError(error, 'Sorry, there was a problem fetching the data')
 
             dispatch({
@@ -151,6 +173,7 @@ export const GlobalProvider = ({children}) => {
               })
 
         } catch (error) {
+            if (error.response.status === 401) userLogout()
             alertError(error, 'Sorry, there was a problem fetching the data')
 
             dispatch({
@@ -162,9 +185,11 @@ export const GlobalProvider = ({children}) => {
 
     function alertError(errorObject, fallbackMessage)
     {
-        const errorList = errorObject.response.data.errors || []
-        if (errorList.length) setAlert(errorList[0])
-        else setAlert(fallbackMessage)
+        try {
+            setAlert(errorObject.response.data.errors[0])
+        } catch (error) {
+            setAlert(fallbackMessage)
+        }
     }
 
     return (
@@ -177,6 +202,8 @@ export const GlobalProvider = ({children}) => {
             idToEdit: state.idToEdit,
             alert: state.alert,
             userLogged: state.userLogged,
+            userName: state.userName,
+            checkForToken,
             userRegister,
             userLogin,
             userLogout,

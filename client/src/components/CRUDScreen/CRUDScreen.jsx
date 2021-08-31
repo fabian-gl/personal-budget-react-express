@@ -1,6 +1,5 @@
 import './CRUDScreen.css'
 
-import { useHistory } from "react-router-dom"
 import { useEffect, useContext, useState } from 'react';
 
 import { GlobalContext } from '../../context/GlobalState'
@@ -12,13 +11,10 @@ import EditModal from '../EditModal/EditModal';
 
 const CRUDScreen = () => {
     
-    const { showModal, showingModal, getAllTransactions, transactions, loading, userLogged } = useContext(GlobalContext);
-    const history = useHistory()
+    const { checkForToken, showModal, showingModal, getAllTransactions, transactions, loading } = useContext(GlobalContext);
     
-    if (!userLogged) history.push('/login')
-
     useEffect( () => {
-        getAllTransactions()
+        if (checkForToken()) getAllTransactions()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

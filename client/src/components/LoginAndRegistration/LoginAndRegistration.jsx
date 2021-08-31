@@ -105,7 +105,6 @@ const LoginAndRegistration = () => {
             else 
             {
                 const loginOk = await userLogin(userData)
-                console.log(loginOk)
                 if (loginOk) history.push('/')
             }
         }

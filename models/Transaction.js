@@ -26,7 +26,7 @@ exports.initTransactionModel = async sequelize => {
         },
         date: {
             allowNull: false,
-            type: DataTypes.DATE
+            type: DataTypes.DATEONLY
         },
         user_id: {
             allowNull: true, // change!

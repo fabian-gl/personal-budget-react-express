@@ -47,12 +47,41 @@
 .cont-navbar .cont-middle {
     height: 100%;
     position: relative;
+    display: flex;
+    justify-content: flex-end;
     flex: 1;
+}
+
+.cont-navbar .cont-middle .cont-user {
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2vh;
+    align-self: flex-end;
+}
+
+.cont-navbar .cont-middle .cont-user .greeting {
+    margin-bottom: 0.5vh;
+}
+
+.cont-navbar .cont-middle .cont-user .logout {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5vh 1vh;
+    border-radius: 1vh;
+}
+
+.cont-navbar .cont-middle .cont-user .logout:hover {
+    background: black;
 }
 
 .cont-navbar .cont-buttons {
     height: 100%;
     display: flex;
+    flex: 1;
     flex-direction: row;
     align-items: center;
     flex-wrap: nowrap;
@@ -66,6 +95,7 @@
     .cont-navbar .cont-buttons { display: none; }
     .cont-navbar .cont-hamburger { display: flex; }
     .cont-navbar .menu-cellphone { display: flex; }
+    .cont-navbar .cont-middle .cont-user { margin-right: 80px; }
  }
 
 

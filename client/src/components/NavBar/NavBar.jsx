@@ -10,7 +10,7 @@ import { GlobalContext } from '../../context/GlobalState'
 
 const NavBar = () => {
 
-    const { userLogged, userLogout } = useContext(GlobalContext);
+    const { userLogged, userLogout, userName } = useContext(GlobalContext);
 
     const menu = ( userLogged ? [
         {name: 'Summary', route: '/'},
@@ -34,6 +34,13 @@ const NavBar = () => {
                     <div className="cont-buttons">
                         { menu.map((elem, index) => <NavBarItem {...elem} key={index}/>) }
                     </div>
+                    { userLogged &&
+                        <div className="cont-user">
+                            {userName && <h6 className='greeting'>Welcome, {userName.split(' ')[0]}</h6>}
+                            <h5 className='logout' onClick={userLogout}>Log out</h5>
+                        </div>
+                    }
+
                     <div className="cont-hamburger">
                         <div className="menu-wrap">
                             <input onClick={toggleMenuCelu} type="checkbox" className="toggler" />

@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
             {
                 jwt.sign({userId: user.id}, 'qwerty321', { expiresIn: '1h' }, (err, token) => {
                     if (err) throw new Error(err)
-                    res.status(200).json({token, message: 'Login successful'})
+                    res.status(200).json({token, name:user.name, message: 'Login successful'})
                   })
                 
             }

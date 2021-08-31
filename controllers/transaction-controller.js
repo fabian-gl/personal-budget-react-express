@@ -24,9 +24,12 @@ exports.update = async (req, res) => {
             return
         }
     
-        transactionFound = await Transaction.findByPk(params.id)
-    
-        if (transactionFound === null || transactionFound.user_id !== req.userId) res.status(404).send({error: 'Transaction not found'})
+        transactionFound = await Transaction.findOne({where: {
+            id: params.id,
+            user_id: req.userId
+        }})
+        
+        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
         else
         {
             const {id, ...updatableParams} = params 
@@ -92,8 +95,11 @@ exports.delete = async (req, res) => {
             return
         }
 
-        transactionFound = await Transaction.findByPk(params.id)
-        if (transactionFound === null || transactionFound.user_id !== req.userId) res.status(404).send({error: 'Transaction not found'})
+        transactionFound = await Transaction.findOne({where: {
+            id: params.id,
+            user_id: req.userId
+        }})
+        if (transactionFound === null) res.status(404).send({error: 'Transaction not found'})
         else
         {
             await transactionFound.destroy()
