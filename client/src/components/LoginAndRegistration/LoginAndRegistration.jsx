@@ -11,7 +11,7 @@ const LoginAndRegistration = () => {
 
     const history = useHistory()
 
-    const { userLogin, userRegister } = useContext(GlobalContext);
+    const { userLogin, userRegister, checkForToken } = useContext(GlobalContext);
 
     const [isRegistration, setIsRegistration] = useState(false)
     
@@ -22,6 +22,12 @@ const LoginAndRegistration = () => {
     const [validationErrors, setValidationErrors] = useState({})
 
     const [showingErrors, setShowingErrors] = useState(false)
+
+
+    useEffect(() => {
+        if (checkForToken()) history.push('/')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
 

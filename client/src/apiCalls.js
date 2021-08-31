@@ -37,6 +37,7 @@ export const userRegister = async userData => {
     return axios.post(`${apiRootUrl}/api/v1/user/register`, {...userData})
 }
 
-export const userLogout = async () => {
-    return axios.post(`${apiRootUrl}/api/v1/user/logout`)
+export const getUserName = async () => {
+    return axios.get(`${apiRootUrl}/api/v1/user/name`,
+        { headers: {Authorization: `Bearer ${getToken()}`}} )
 }

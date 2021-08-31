@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
             const token = bearerHeader.split(' ')[1];
             const decodedToken = jwt.verify(token, 'qwerty321')
             req.userId = decodedToken.userId
-            req.token = token
+            req.userName = decodedToken.userName
             next()
         }
         else throw new Error('No token present on Authorization header')

@@ -25,16 +25,51 @@ export const GlobalProvider = ({children}) => {
 
     const history = useHistory()
 
-    const checkForToken = () => {
+    const checkForToken = async () => {
 
-        const tokenExists = localStorage.getItem('access_token') !== null
-        if (!tokenExists && state.userLogged) history.push('/login')
 
-        dispatch({
-            type: 'SET_LOGGED',
-            logged: tokenExists
-        })
-        return tokenExists
+        try {
+            const response = await apiCalls.getUserName()
+            const userName = response.data.userName
+
+            dispatch({
+                type: 'SET_USER_NAME',
+                userName: userName,
+            })
+
+            dispatch({
+                type: 'SET_LOGGED',
+                logged: true,
+            })
+            return true
+
+        } catch (error) {
+            dispatch({
+                type: 'SET_LOGGED',
+                logged: false,
+            })
+            history.push('/login')
+            return false
+        }
+
+        // const tokenExists = localStorage.getItem('access_token') !== null
+        // let userName = ''
+        // if (!tokenExists) history.push('/login')
+        // else {
+        //     const response = await apiCalls.getUserName()
+        //     userName = response.data.userName
+        // }
+
+        // dispatch({
+        //     type: 'SET_USER_NAME',
+        //     userName: userName,
+        // })
+
+        // dispatch({
+        //     type: 'SET_LOGGED',
+        //     logged: tokenExists,
+        // })
+        // return tokenExists
     }
 
     const userRegister = async userData => {

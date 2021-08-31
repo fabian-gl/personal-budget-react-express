@@ -31,7 +31,10 @@ exports.login = async (req, res) => {
             
             if (authOk)
             {
-                jwt.sign({userId: user.id}, 'qwerty321', { expiresIn: '1h' }, (err, token) => {
+                jwt.sign({
+                    userId: user.id,
+                    userName: user.name
+                }, 'qwerty321', { expiresIn: '1h' }, (err, token) => {
                     if (err) throw new Error(err)
                     res.status(200).json({token, name:user.name, message: 'Login successful'})
                   })
@@ -85,9 +88,9 @@ exports.register = async (req, res) => {
     }
 }
 
-exports.logout = (req, res) => {
-    // res.send('logout')
-    res.status(200).json(req.body)
+exports.getName = (req, res) => {
+    
+    res.status(200).json({userName: req.userName})
 }
 
 
