@@ -68,7 +68,6 @@ const EditModal = () => {
     }
 
     const updateTypeInput = newType => {
-        console.log(newType)
         setTypeFromInput(newType)
         setTransactionType(newType)
     }

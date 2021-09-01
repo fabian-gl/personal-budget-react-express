@@ -20,7 +20,7 @@ const initialState = {
 
 export const GlobalContext = createContext(initialState)
 
-export const GlobalProvider = ({children}) => {
+export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
     const history = useHistory()
@@ -50,36 +50,17 @@ export const GlobalProvider = ({children}) => {
             history.push('/login')
             return false
         }
-
-        // const tokenExists = localStorage.getItem('access_token') !== null
-        // let userName = ''
-        // if (!tokenExists) history.push('/login')
-        // else {
-        //     const response = await apiCalls.getUserName()
-        //     userName = response.data.userName
-        // }
-
-        // dispatch({
-        //     type: 'SET_USER_NAME',
-        //     userName: userName,
-        // })
-
-        // dispatch({
-        //     type: 'SET_LOGGED',
-        //     logged: tokenExists,
-        // })
-        // return tokenExists
     }
 
     const userRegister = async userData => {
 
         try {
-            await apiCalls.userRegister(userData)
-            setAlert('Registration successful', false)
+            const response = await apiCalls.userRegister(userData)
+            setAlert(response.data.message, false)
             return true
             
         } catch (error) {
-            alertError(error, "Sorry, We couldn't sign you in")
+            alertError(error, "Sorry, we couldn't sign you in")
             return false
         }
     }
@@ -95,7 +76,7 @@ export const GlobalProvider = ({children}) => {
                 userName: response.data.name
             })
 
-            window.localStorage.setItem('access_token', response.data.token)
+            localStorage.setItem('access_token', response.data.token)
 
             checkForToken()
             return true
@@ -104,7 +85,6 @@ export const GlobalProvider = ({children}) => {
             alertError(error, "Sorry, We couldn't log you in")
             return false
         }
-     
     }
 
     const userLogout = () => {
@@ -140,9 +120,9 @@ export const GlobalProvider = ({children}) => {
     const addTransaction = async (name, amount, type, date) => {
 
         try {
-            await apiCalls.addTransaction(name, amount, type, date)
+            const response = await apiCalls.addTransaction(name, amount, type, date)
             getAllTransactions()
-            setAlert('Transaction added', false)
+            setAlert(response.data.message, false)
         } catch (error) {
             alertError(error, 'Sorry, there was a problem adding the transaction')
         }
@@ -151,9 +131,9 @@ export const GlobalProvider = ({children}) => {
     const updateTransaction = async (id, name, amount, date) => {
 
         try {
-            await apiCalls.updateTransaction(id, name, amount, date)
+            const response = await apiCalls.updateTransaction(id, name, amount, date)
             getAllTransactions()
-            setAlert('Transaction updated', false)
+            setAlert(response.data.message, false)
         } catch (error) {
             alertError(error, 'Sorry, there was a problem updating the transaction')
         }
@@ -161,10 +141,10 @@ export const GlobalProvider = ({children}) => {
 
     const deleteTransaction = async id => {
         try {
-            await apiCalls.deleteTransaction(id)
+            const response = await apiCalls.deleteTransaction(id)
             
             getAllTransactions()
-            setAlert('Transaction deleted', false)
+            setAlert(response.data.message, false)
         } catch (error) {
             alertError(error, 'Sorry, there was a problem deleting the transaction')
         }

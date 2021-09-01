@@ -1,9 +1,11 @@
+
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const { getUserModel } = require('../models/User')
 
 
+// route: POST /api/v1/user/login
 exports.login = async (req, res) => {
 
     try {
@@ -11,7 +13,7 @@ exports.login = async (req, res) => {
 
         const params = {
             email: req.body.email,
-            password: req.body.password,
+            password: req.body.password
         }
 
         const validationResult = validateParams(params)
@@ -22,11 +24,10 @@ exports.login = async (req, res) => {
             return
         }
 
-        const user = await User.findOne({ where: {email: req.body.email}})
+        const user = await User.findOne({ where: { email: req.body.email }})
     
-        if (!user) res.status(401).json({ok: false, errors: ['Incorrect email or password']})
-        else
-        {
+        if (!user) res.status(401).json({ errors: ['Incorrect email or password'] })
+        else {
             const authOk = await bcrypt.compare(params.password, user.password_hash)
             
             if (authOk)
@@ -36,18 +37,19 @@ exports.login = async (req, res) => {
                     userName: user.name
                 }, 'qwerty321', { expiresIn: '1h' }, (err, token) => {
                     if (err) throw new Error(err)
-                    res.status(200).json({token, name:user.name, message: 'Login successful'})
+                    res.status(200).json({token, name: user.name, message: 'Login successful' })
                   })
-                
             }
-            else res.status(401).json({ok: false, errors: ['Incorrect email or password']})
-
+            else res.status(401).json({ errors: ['Incorrect email or password'] })
         }
       
     } catch (error) {
-        res.status(500).json({error: `Couldn't log you in`})
-    }}
+        res.status(500).json({ errors: ["Couldn't log you in"] })
+    }
+}
 
+
+// route: POST /api/v1/user/register
 exports.register = async (req, res) => {
     
     try {
@@ -56,22 +58,21 @@ exports.register = async (req, res) => {
         const params = {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: req.body.password
         }
 
         const validationResult = validateParams(params)
 
         if (!validationResult.valid)
         {
-            res.status(400).json({ok: false, errors: validationResult.errors})
+            res.status(400).json({ errors: validationResult.errors })
             return
         }
 
-        const user = await User.findOne({ where: {email: req.body.email}})
+        const user = await User.findOne({ where: {email: req.body.email }})
     
-        if (user) res.status(400).json({ok: false, errors: ['The email is already registered']})
-        else
-        {
+        if (user) res.status(400).json({ errors: ['The email is already registered'] })
+        else {
             const hash = await hashPassword(req.body.password)
             await User.create({
                 name: req.body.name,
@@ -83,16 +84,18 @@ exports.register = async (req, res) => {
         }
         
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error: `Couldn't sign you in ${error}`})
+        res.status(500).json({ errors: "Couldn't sign you in" })
     }
 }
 
+
+// route: GET /api/v1/user/name
 exports.getName = (req, res) => {
-    
-    res.status(200).json({userName: req.userName})
+    res.status(200).json({ userName: req.userName })
 }
 
+
+// Helper functions
 
 async function hashPassword(password)
 {
@@ -107,15 +110,6 @@ async function hashPassword(password)
     })
 }
 
-
-
-
-// const simulateServerDelay = () => {
-//     const DELAY_IN_MILLISECONDS = 1000
-//     return new Promise((resolve, reject) => {
-//         setTimeout(resolve, DELAY_IN_MILLISECONDS)
-//     })
-// }
 
 const validateParams = params => {
     
@@ -137,5 +131,5 @@ const validateParams = params => {
             errors.push('The password must have at least 6 characters')
     }
 
-    return {valid: errors.length === 0, errors}
+    return { valid: errors.length === 0, errors }
 }

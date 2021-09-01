@@ -35,5 +35,4 @@ exports.initDb = async () => {
         })
         .catch(reject)
     })
-
 }
