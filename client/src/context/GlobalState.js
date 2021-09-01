@@ -27,7 +27,6 @@ export const GlobalProvider = ({children}) => {
 
     const checkForToken = async () => {
 
-
         try {
             const response = await apiCalls.getUserName()
             const userName = response.data.userName

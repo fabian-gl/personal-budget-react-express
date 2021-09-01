@@ -25,7 +25,10 @@ const LoginAndRegistration = () => {
 
 
     useEffect(() => {
-        if (checkForToken()) history.push('/')
+
+        (async () => {
+            if (await checkForToken()) history.push('/')
+          })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

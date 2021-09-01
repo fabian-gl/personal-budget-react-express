@@ -52,9 +52,10 @@
     align-items: center;
 }
 
-.cont-login-registration .cont-change-form button{
+.cont-login-registration .cont-change-form button {
     margin-left: 3vh;
     padding: 0.5vh;
+    background: white;
 }
 
 
