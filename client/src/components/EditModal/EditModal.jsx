@@ -5,11 +5,13 @@ import { GlobalContext } from '../../context/GlobalState'
 import { todayFormatted } from '../../utils'
 import OptionType from '../OptionType/OptionType';
 
-const INCOME_TYPE = 1
-const OUTCOME_TYPE = -1
 
 const EditModal = () => {
-    const { addTransaction, updateTransaction, deleteTransaction, hideModal, transactions, idToEdit } = useContext(GlobalContext);
+    
+    const INCOME_TYPE = 1
+    const OUTCOME_TYPE = -1
+
+    const { setAlert, addTransaction, updateTransaction, deleteTransaction, hideModal, transactions, idToEdit } = useContext(GlobalContext);
 
     const currentTransaction = (idToEdit ? transactions.find(transaction => transaction.id === idToEdit) : {})
     
@@ -21,35 +23,34 @@ const EditModal = () => {
     const [typeFromInput, setTypeFromInput] = useState(0)
 
 
-
     const validateInputs = () => {
         if (transactionName.length < 2)
         {
-            alert('Please enter a valid name')
+            setAlert('Please enter a valid name')
             return false
         }
 
         if (!Number(transactionAmount) || isNaN(transactionAmount))
         {
-            alert('Please enter a valid amount')
+            setAlert('Please enter a valid amount')
             return false
         }
 
-        if ((transactionAmount * transactionType < 0))
+        if (Number(transactionAmount) * transactionType < 0)
         {
-            alert(`Your original transaction was a ${(transactionType === 1 ? 'input' : 'output')}, and the sign of the new amount must be consistent with that`)
+            setAlert("You can't change the sign of a transaction")
             return false
         }
 
         if (!transactionType)
         {
-            alert('Please select income or outcome using the icons')
+            setAlert('Please select income or outcome using the icons')
             return false
         }
 
         if (!/^\d{4}-\d{2}-\d{2}$/.test(transactionDate))
         {
-            alert('Please select a valid date')
+            setAlert('Please select a valid date')
             return false
         }    
 
@@ -57,60 +58,62 @@ const EditModal = () => {
     }
 
     const handleNameChange = e => {
+
         setTransactionName(e.target.value)
     }
     const handleAmountChange = e => {
-        setTransactionAmount(e.target.value)
-    }
-    const handleKeyDown = e => {
-        if (e.key === '+') updateTypeInput(INCOME_TYPE)
-        else if (e.key === '-') updateTypeInput(OUTCOME_TYPE)
-    }
 
-    const updateTypeInput = newType => {
-        setTypeFromInput(newType)
-        setTransactionType(newType)
+        setTransactionAmount(e.target.value)
     }
 
     const handleTypeChange = newType => {
+
         setTransactionType(newType)
         if ((Number(transactionAmount) > 0 && newType === OUTCOME_TYPE) || (Number(transactionAmount) < 0 && newType === INCOME_TYPE)) setTransactionAmount(-transactionAmount)
     }
 
     const handleDateChange = e => {
+
         setTransactionDate(e.target.value)
     }
 
-    const handleDeleteClick = async () => {
-        try {
-            await deleteTransaction(idToEdit)
-            hideModal()
-        } catch (error) {
-            alert(error)
+    const handleKeyDown = e => {
+        // Will update the transaction type only if we are adding a new transaction
+        if (!idToEdit)
+        {
+            if (e.key === '+') updateTypeInput(INCOME_TYPE)
+            else if (e.key === '-') updateTypeInput(OUTCOME_TYPE)
         }
     }
 
+    const updateTypeInput = newType => {
+
+        setTypeFromInput(newType)
+        setTransactionType(newType)
+    }
+
+    const handleDeleteClick = async () => {
+
+        await deleteTransaction(idToEdit)
+        hideModal()
+    }
+
     const handleUpdateClick = async () => {
-        try {
-            if (!validateInputs()) return
-            await updateTransaction(idToEdit, transactionName, transactionAmount, transactionDate)
-            hideModal()
-        } catch (error) {
-            alert(error)
-        }        
+
+        if (!validateInputs()) return
+        await updateTransaction(idToEdit, transactionName, transactionAmount, transactionDate)
+        hideModal()
     }
     
     const handleAddClick = async () => {
-        try {
-            if (!validateInputs()) return
-            await addTransaction(transactionName, transactionAmount, transactionType, transactionDate)
-            hideModal()
-        } catch (error) {
-            alert(error)
-        }           
+
+        if (!validateInputs()) return
+        await addTransaction(transactionName, transactionAmount, transactionType, transactionDate)
+        hideModal()        
     }
 
     const handleClickOutOfModal = e => {
+        
         if (e.target.classList.contains('cont-outer-modal')) hideModal()
     }
 

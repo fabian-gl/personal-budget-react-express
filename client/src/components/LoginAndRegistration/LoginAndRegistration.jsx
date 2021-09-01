@@ -125,6 +125,9 @@ const LoginAndRegistration = () => {
         setIsRegistration(!isRegistration)
     }
 
+    const handleOnKeyDown = e => {
+        if (e.key.toUpperCase() === 'ENTER') handleSubmit()
+    }
 
     return (
         <div className='cont-login-registration'>
@@ -133,7 +136,7 @@ const LoginAndRegistration = () => {
             :
                 <h2>Use your credentials to enter the system</h2>
             }
-            <form className='form-user' onChange={handleChange}>
+            <form className='form-user' onChange={handleChange} onKeyDown={handleOnKeyDown}>
                 { formElements.map((elem, i) => 
                     <FormElement key={i} {...elem}
                         validationErrors={validationErrors} 
@@ -141,7 +144,9 @@ const LoginAndRegistration = () => {
                 />) }
             </form>
 
-            <button className={`btn-submit ${btnEnabled && 'enabled'}`} onClick={handleSubmit}>{(isRegistration ? "Sign up" : "Log in")}</button>
+            <button className={`btn-submit ${btnEnabled && 'enabled'}`} onClick={handleSubmit}>
+                {(isRegistration ? "Sign up" : "Log in")}
+            </button>
             
             <div className="cont-change-form">
                 <p>{(isRegistration ? "Wanted to log in instead?" : "Don't have an account yet?")}</p>

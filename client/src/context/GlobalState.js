@@ -27,8 +27,8 @@ export const GlobalProvider = ({ children }) => {
 
     const checkForToken = async () => {
 
-        try {
-            const response = await apiCalls.getUserName()
+        apiCalls.getUserName()
+        .then(response => {
             const userName = response.data.userName
 
             dispatch({
@@ -41,15 +41,38 @@ export const GlobalProvider = ({ children }) => {
                 logged: true,
             })
             return true
-
-        } catch (error) {
+        })
+        .catch(error => {
             dispatch({
                 type: 'SET_LOGGED',
                 logged: false,
             })
             history.push('/login')
             return false
-        }
+        })
+        // try {
+        //     const response = await apiCalls.getUserName()
+        //     const userName = response.data.userName
+
+        //     dispatch({
+        //         type: 'SET_USER_NAME',
+        //         userName: userName,
+        //     })
+
+        //     dispatch({
+        //         type: 'SET_LOGGED',
+        //         logged: true,
+        //     })
+        //     return true
+
+        // } catch (error) {
+        //     dispatch({
+        //         type: 'SET_LOGGED',
+        //         logged: false,
+        //     })
+        //     history.push('/login')
+        //     return false
+        // }
     }
 
     const userRegister = async userData => {
