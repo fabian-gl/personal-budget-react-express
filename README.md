@@ -2,8 +2,6 @@
 
 System to help you manage the finances letting you add incomes and outcomes, and letting you see the summary of the transactions.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 
 ## Available Scripts
 
