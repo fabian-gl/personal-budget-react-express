@@ -120,7 +120,11 @@ exports.getSummaryInfo = async (req, res) => {
     try {
         const User = getUserModel()
         user = await User.findByPk(req.userId)
-        const transactions = await user.getTransactions()
+        const transactions = await user.getTransactions({ 
+            order: [
+                ['date', 'desc'],
+                ['createdAt', 'desc']
+        ]})
 
         const data = transactions.map(d => d.toJSON())
         const latestTransactions = data.slice(0, 10)
@@ -141,7 +145,12 @@ exports.getAll = async (req, res) => {
     try {
         const User = getUserModel()
         user = await User.findByPk(req.userId)
-        const transactions = await user.getTransactions()
+        const transactions = await user.getTransactions({ 
+            order: [
+                ['date', 'desc'],
+                ['createdAt', 'desc']
+        ]})
+        
         await simulateServerDelay()
         res.status(200).json({ transactions })
 
