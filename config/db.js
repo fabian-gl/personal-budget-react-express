@@ -25,12 +25,16 @@ exports.initDb = async () => {
             {
                 host: process.env.DATABASE_HOST,
                 dialect: 'mysql',
-                logging: false
+                // logging: false
             })
         sequelize.authenticate()
         .then(async () => {
-            await initTransactionModel(sequelize)
-            await initUserModel(sequelize)
+            const Transaction = await initTransactionModel(sequelize)
+            const User = await initUserModel(sequelize)
+
+            User.hasMany(Transaction)
+            Transaction.belongsTo(User)
+            console.log('Created associations')
             resolve()
         })
         .catch(reject)

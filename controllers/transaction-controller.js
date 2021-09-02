@@ -1,5 +1,6 @@
 
 const { getTransactionModel } = require('../models/Transaction')
+const { getUserModel } = require('../models/User')
 
 
 // route: PUT /api/v1/transactions
@@ -26,7 +27,7 @@ exports.update = async (req, res) => {
     
         transactionFound = await Transaction.findOne({where: {
             id: params.id,
-            user_id: req.userId
+            userId: req.userId
         }})
         
         if (!transactionFound) res.status(404).send({ errors: ['Transaction not found' ]})
@@ -48,6 +49,7 @@ exports.update = async (req, res) => {
 exports.add = async (req, res) => {
 
     try {
+
         const Transaction = getTransactionModel()
 
         const params = {
@@ -65,11 +67,12 @@ exports.add = async (req, res) => {
             return
         }
 
-        params.user_id = req.userId
+        params.userId = req.userId
 
         await Transaction.create(params)
         res.status(200).json({ message: 'Transaction created' })
     } catch (error) {
+        console.log(error)
         res.status(500).json({ errors: ["Couldn't add transaction"] })
     }
 }
@@ -79,6 +82,7 @@ exports.add = async (req, res) => {
 exports.delete = async (req, res) => {
 
     try {
+
         const Transaction = getTransactionModel()
 
         const params = {
@@ -92,12 +96,12 @@ exports.delete = async (req, res) => {
             res.status(400).json({ok: false, errors: validationResult.errors})
             return
         }
-
+        
         transactionFound = await Transaction.findOne({where: {
             id: params.id,
-            user_id: req.userId
+            userId: req.userId
         }})
-
+        
         if (!transactionFound) res.status(404).send({ errors: ['Transaction not found'] })
         else {
             await transactionFound.destroy()
@@ -112,15 +116,19 @@ exports.delete = async (req, res) => {
 
 // route: GET /api/v1/transactions
 exports.getSummaryInfo = async (req, res) => {
-
+    
     try {
-        const transactions = await getAllTransactions(req.userId)
+        const User = getUserModel()
+        user = await User.findByPk(req.userId)
+        const transactions = await user.getTransactions()
 
         const data = transactions.map(d => d.toJSON())
         const latestTransactions = data.slice(0, 10)
         const balance = data.reduce((acum, actual) => parseFloat(actual.amount) + acum, 0)
 
+        await simulateServerDelay()
         res.status(200).json({ latestTransactions, balance })
+
     } catch (error) {
         res.status(500).json({ errors: ["Couldn't retrieve transactions"] })
     }
@@ -131,7 +139,10 @@ exports.getSummaryInfo = async (req, res) => {
 exports.getAll = async (req, res) => {
 
     try {
-        const transactions = await getAllTransactions(req.userId)
+        const User = getUserModel()
+        user = await User.findByPk(req.userId)
+        const transactions = await user.getTransactions()
+        await simulateServerDelay()
         res.status(200).json({ transactions })
 
     } catch (error) {
@@ -139,20 +150,6 @@ exports.getAll = async (req, res) => {
     }
 }
 
-const getAllTransactions = async userId => {
-    const Transaction = getTransactionModel()
-
-    const transactions = await Transaction.findAll({
-        where: { user_id: userId },
-        order: [
-            ['date', 'desc'],
-            ['createdAt', 'desc']
-        ]
-    })
-
-    await simulateServerDelay()
-    return transactions
-}
 
 const simulateServerDelay = () => {
     const DELAY_IN_MILLISECONDS = 1000

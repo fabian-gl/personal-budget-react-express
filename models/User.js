@@ -5,6 +5,7 @@ let User
 exports.getUserModel = () => User
 
 exports.initUserModel = async sequelize => {
+    
     User = sequelize.define('User', {
         id: {
             allowNull: false,
@@ -27,5 +28,6 @@ exports.initUserModel = async sequelize => {
     })
     
     await User.sync()
+    return User
 }
 

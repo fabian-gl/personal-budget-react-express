@@ -29,6 +29,8 @@ const SERVER_PORT = process.env.SERVER_PORT || 5000
 initDb().then(() => {
     console.log('Connected to mySql!')
     app.listen(SERVER_PORT, console.log(`Server running in ${process.env.NODE_ENV} mode at port ${SERVER_PORT}.`))
+
+    console.log('')
 }).catch(err => {
     console.log(`Couldn't connect to database: ${err}`)
 })

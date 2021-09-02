@@ -28,13 +28,13 @@ exports.initTransactionModel = async sequelize => {
             allowNull: false,
             type: DataTypes.DATEONLY
         },
-        user_id: {
-            allowNull: true, // change!
-            default: 1,
-            type: DataTypes.INTEGER
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     })
     
     await Transaction.sync()
+    return Transaction
 }
 
