@@ -8,14 +8,14 @@ System to help you manage the finances letting you add incomes and outcomes, and
 
 ### `npm install`
 
-Will install the dependencies of the project.
+You will need to run this command from the top level of the project to install the server dependencies, and then go to the client folder and run the same command again but this time it's the client dependencies the ones that will get installed.
 
 
 ### `npm run dev`
 
 In the project top directory, will start the app in dev enviroment:
 
-This will run the React Client at http://localhost:3000, and run the backend at http://localhost:5000
+This will run the React Client at http://localhost:3000, and the express server will be listening for requests at http://localhost:5000
 
 If the database is not created, the system will automatically generate it for you.
 
