@@ -25,7 +25,7 @@ exports.update = async (req, res) => {
             return
         }
     
-        transactionFound = await Transaction.findOne({where: {
+        let transactionFound = await Transaction.findOne({where: {
             id: params.id,
             userId: req.userId
         }})
@@ -34,7 +34,7 @@ exports.update = async (req, res) => {
         else {
             const {id, ...updatableParams} = params 
 
-            for (const key in updatableParams) transactionFound[key] = updatableParams[key]
+            Object.assign(transactionFound, updatableParams)
             
             await transactionFound.save()
             res.status(200).json({ message: 'Transaction updated' })
@@ -49,7 +49,6 @@ exports.update = async (req, res) => {
 exports.add = async (req, res) => {
 
     try {
-
         const Transaction = getTransactionModel()
 
         const params = {
@@ -67,9 +66,7 @@ exports.add = async (req, res) => {
             return
         }
 
-        params.userId = req.userId
-
-        await Transaction.create(params)
+        await Transaction.create({...params, userId: req.userId})
         res.status(200).json({ message: 'Transaction created' })
     } catch (error) {
         console.log(error)
@@ -82,7 +79,6 @@ exports.add = async (req, res) => {
 exports.delete = async (req, res) => {
 
     try {
-
         const Transaction = getTransactionModel()
 
         const params = {
@@ -97,16 +93,13 @@ exports.delete = async (req, res) => {
             return
         }
         
-        transactionFound = await Transaction.findOne({where: {
+        const transactionExisted = await Transaction.destroy({where: {
             id: params.id,
             userId: req.userId
         }})
-        
-        if (!transactionFound) res.status(404).send({ errors: ['Transaction not found'] })
-        else {
-            await transactionFound.destroy()
-            res.status(200).json({ message: 'Transaction deleted' })
-        }
+
+        if (transactionExisted) res.status(200).json({ message: 'Transaction deleted' })
+        else res.status(404).send({ errors: ['Transaction not found'] })
 
     } catch (error) {
         res.status(500).json({ errors: ["Couldn't delete transaction"] })
@@ -119,13 +112,15 @@ exports.getSummaryInfo = async (req, res) => {
     
     try {
         const User = getUserModel()
-        user = await User.findByPk(req.userId)
+
+        const user = await User.findByPk(req.userId)
         const transactions = await user.getTransactions({ 
             order: [
                 ['date', 'desc'],
                 ['createdAt', 'desc']
         ]})
 
+        // Converts sequelize objects to javascript objects
         const data = transactions.map(d => d.toJSON())
         const latestTransactions = data.slice(0, 10)
         const balance = data.reduce((acum, actual) => parseFloat(actual.amount) + acum, 0)
@@ -144,7 +139,8 @@ exports.getAll = async (req, res) => {
 
     try {
         const User = getUserModel()
-        user = await User.findByPk(req.userId)
+        const user = await User.findByPk(req.userId)
+
         const transactions = await user.getTransactions({ 
             order: [
                 ['date', 'desc'],
@@ -157,6 +153,14 @@ exports.getAll = async (req, res) => {
     } catch (error) {
         res.status(500).json({ errors: ["Couldn't retrieve transactions"] })
     }
+}
+
+
+// This fuction will be accesible from the user controller
+exports.deleteAllFromUser = async (userId) => {
+    const Transaction = getTransactionModel()
+
+    return await Transaction.destroy({where: { userId }})
 }
 
 
@@ -176,7 +180,7 @@ const validateParams = params => {
 
         if (!value) errors.push(`The request must have a '${key}' parameter`)
 
-        if (key === 'id') {    
+        else if (key === 'id') {    
             if (!Number.isInteger(value) || Number(value) <= 0) errors.push('The id must be a positive integer')
         
         } else if (key === 'name') {

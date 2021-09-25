@@ -32,7 +32,8 @@ exports.initDb = async () => {
             const Transaction = await initTransactionModel(sequelize)
             const User = await initUserModel(sequelize)
 
-            User.hasMany(Transaction)
+            User.hasMany(Transaction, {onDelete: 'CASCADE', hooks: true})
+
             Transaction.belongsTo(User)
             console.log('Created associations')
             resolve()

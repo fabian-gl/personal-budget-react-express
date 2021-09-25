@@ -2,6 +2,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const transactionController  = require('../controllers/transaction-controller')
 const { getUserModel } = require('../models/User')
 
 
@@ -89,6 +90,25 @@ exports.register = async (req, res) => {
 }
 
 
+// route: DELETE /api/v1/user
+exports.delete = async (req, res) => {
+
+    try {
+        const User = getUserModel()
+
+        // First delete all transactions of the user
+        await transactionController.deleteAllFromUser(req.userId)
+
+        const userExisted = await User.destroy({ where: {id: req.userId }})
+
+        if (userExisted) res.status(200).json({message: 'User deleted'})
+        else res.status(400).json({ errors: "There was no user with such id" })
+        
+    } catch (error) {
+        res.status(500).json({ errors: "Couldn't delete user" })
+    }
+}
+
 // route: GET /api/v1/user/name
 exports.getName = (req, res) => {
     res.status(200).json({ userName: req.userName })
@@ -121,7 +141,7 @@ const validateParams = params => {
 
         if (!value) errors.push(`The request must have a '${key}' parameter`)
 
-        if (key === 'name' && String(value).length < 3)
+        else if (key === 'name' && String(value).length < 3)
             errors.push('The name is too short')
 
         else if (key === 'email' && !/\S+@\S+\.\S+/.test(value))
