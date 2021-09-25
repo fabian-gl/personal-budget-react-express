@@ -39,3 +39,7 @@ On the client, I used axios to send requests to the server, react-router-dom to 
 
 As dev dependecies nodemon is used to restart the server when a file is saved, and concurrently that allows to run the server and the client with the same command.
 
+
+## Testing
+
+The api is tested using postman. In the folder api-test, the a json and a png file can be found to see the results of the tests. To run the test yourself, you can import the file test-plan-import-with-postman.json from postman, or you can see the documentation about how the tests are structured in the following link [test documentation](https://documenter.getpostman.com/view/14922121/UUxxg8h1)

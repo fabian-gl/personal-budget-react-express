@@ -1,0 +1,890 @@
+{
+	"info": {
+		"_postman_id": "1b04ab9b-549e-4406-aa54-31a8b213cd1c",
+		"name": "personal-budget-tests",
+		"description": "Here we have the collection of tests designed to check if our API behaves as expected.\n\nFor convenience is divided in 2 folders corresponding to the main routes we can hit in the API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "empty login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond bad request', () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should be json', () => {\r",
+									"    pm.response.to.be.json\r",
+									"})\r",
+									"\r",
+									"pm.test('Should ask for email', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"The request must have a 'email' parameter\")\r",
+									"})\r",
+									"\r",
+									"pm.test('Should ask for password', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"The request must have a 'password' parameter\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/v1/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "wrong credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond unauthorized', () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test('Should send authentication error', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"Incorrect email or password\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"fake_email@correo_g.com\",\r\n    \"password\":\"00000000\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid registration data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond bad request', () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should say invalid name', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"The name is too short\")\r",
+									"})\r",
+									"\r",
+									"pm.test('Should say invalid email', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"The email is not valid\")\r",
+									"})\r",
+									"\r",
+									"pm.test('Should say invalid password', () => {\r",
+									"    const { errors } = pm.response.json()\r",
+									"\r",
+									"    pm.expect(errors).to.include(\"The password must have at least 6 characters\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ts\",\r\n    \"email\":\"invalid_email.com\",\r\n    \"password\":\"1234\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let { message } = pm.response.json()\r",
+									"    pm.expect(message).to.include(\"User created, now log in please\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"test user\",\r\n    \"email\":\"test_email@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData.message).to.include(\"Login successful\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test('Should have token', () => {\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData).to.include.key('token')\r",
+									"    pm.collectionVariables.set('token', jsonData.token)\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test_email@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "In the next series of tests we try to register and login with wrong data before attempting the successful calls that will return the token we will use for validating the rest of the requests."
+		},
+		{
+			"name": "transactions",
+			"item": [
+				{
+					"name": "no token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond not allowed', () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "wrong token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond not allowed', () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInBzZXJOYW1lIjoidGVzdCB1c2VyIiwiaWF0IjoxNjMyNDU5MzU1LCJleHAiOjE2MzI0NjI5NTV9.pNd1SVN9U0VBzBRYLDu9xwyrZQkthcNHqTZh3LnsRac",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let { message } = pm.response.json()\r",
+									"    \r",
+									"    pm.expect(message).to.include(\"Transaction created\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"transaction1\",\r\n    \"amount\":\"-555.99\",\r\n    \"type\":\"-1\",\r\n    \"date\":\"2021-09-21\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check if added correctly",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have 1 transaction', () => {\r",
+									"    let { transactions } = pm.response.json()\r",
+									"    pm.expect(transactions.length).to.be.equal(1)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have data we sent', () => {\r",
+									"    let { transactions } = pm.response.json()\r",
+									"    pm.expect(transactions[0]).to.include({\r",
+									"        \"name\": \"transaction1\",\r",
+									"        \"amount\": \"-555.99\",\r",
+									"        \"type\": -1\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add another",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let { message } = pm.response.json()\r",
+									"    \r",
+									"    pm.expect(message).to.include(\"Transaction created\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"transaction2\",\r\n    \"amount\":\"444\",\r\n    \"type\":\"1\",\r\n    \"date\":\"2021-09-21\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check if added new one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have 2 transactions', () => {\r",
+									"    const { transactions } = pm.response.json()\r",
+									"    const lastTransaction = transactions[1]\r",
+									"\r",
+									"    pm.expect(transactions.length).to.be.equal(2)\r",
+									"\r",
+									"    pm.collectionVariables.set('transactionId', lastTransaction.id)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update last transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let { message } = pm.response.json()\r",
+									"    pm.expect(message).to.include(\"Transaction updated\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{transactionId}},\r\n    \"name\":\"updated transaction\",\r\n    \"amount\":\"555\",\r\n    \"type\":\"1\",\r\n    \"date\":\"2021-09-22\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check if updated correctly",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have data we updated', () => {\r",
+									"    const { transactions } = pm.response.json()\r",
+									"    const updatedTransaction = transactions.find(transaction => transaction.id = pm.collectionVariables.get('transactionId'))\r",
+									"\r",
+									"    pm.expect(updatedTransaction).to.include({\r",
+									"        \"name\":\"updated transaction\",\r",
+									"        \"amount\":\"555.00\",\r",
+									"        \"type\":1,\r",
+									"        \"date\":\"2021-09-22\"\r",
+									"    })\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{transactionId}}\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check if deleted correctly",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test('Should have 1 transactions', () => {\r",
+									"    const { transactions } = pm.response.json()\r",
+									"    \r",
+									"    pm.expect(transactions.length).to.be.equal(1)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should respond ok', () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Should respond successful message', () => {\r",
+									"    let { message } = pm.response.json()\r",
+									"    pm.expect(message).to.include(\"User deleted\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/v1/user",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "transactionId",
+			"value": ""
+		}
+	]
+}

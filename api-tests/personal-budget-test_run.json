@@ -1,0 +1,622 @@
+{
+	"id": "ac7d17ca-510c-4f40-96e2-38ee3b528785",
+	"name": "personal-budget-tests",
+	"timestamp": "2021-09-25T04:40:10.530Z",
+	"collection_id": "14922121-1b04ab9b-549e-4406-aa54-31a8b213cd1c",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 34,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "d4711596-576e-4f93-8510-5aa2458074fb",
+			"name": "empty login",
+			"url": "http://localhost:5000/api/v1/user/login",
+			"time": 4,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Should respond bad request": true,
+				"Should be json": true,
+				"Should ask for email": true,
+				"Should ask for password": true
+			},
+			"testPassFailCounts": {
+				"Should respond bad request": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should be json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should ask for email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should ask for password": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Should respond bad request": true,
+					"Should be json": true,
+					"Should ask for email": true,
+					"Should ask for password": true
+				}
+			]
+		},
+		{
+			"id": "380b3b59-de57-44d7-8d5b-7b9c82c3262c",
+			"name": "wrong credentials",
+			"url": "http://localhost:5000/api/v1/user/login",
+			"time": 6,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Should respond unauthorized": true,
+				"Should send authentication error": true
+			},
+			"testPassFailCounts": {
+				"Should respond unauthorized": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should send authentication error": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Should respond unauthorized": true,
+					"Should send authentication error": true
+				}
+			]
+		},
+		{
+			"id": "7da51332-1177-43de-9f6d-b267e1f4781b",
+			"name": "invalid registration data",
+			"url": "http://localhost:5000/api/v1/user/register",
+			"time": 3,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Should respond bad request": true,
+				"Should say invalid name": true,
+				"Should say invalid email": true,
+				"Should say invalid password": true
+			},
+			"testPassFailCounts": {
+				"Should respond bad request": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should say invalid name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should say invalid email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should say invalid password": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Should respond bad request": true,
+					"Should say invalid name": true,
+					"Should say invalid email": true,
+					"Should say invalid password": true
+				}
+			]
+		},
+		{
+			"id": "6907dab2-5307-45ae-96d2-ebf506d6c632",
+			"name": "register",
+			"url": "http://localhost:5000/api/v1/user/register",
+			"time": 87,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				87
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true
+				}
+			]
+		},
+		{
+			"id": "e1d2a47c-e0b4-4130-8b42-76bffb5e98fa",
+			"name": "login",
+			"url": "http://localhost:5000/api/v1/user/login",
+			"time": 83,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true,
+				"Should have token": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have token": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				83
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true,
+					"Should have token": true
+				}
+			]
+		},
+		{
+			"id": "26dab684-122f-4a59-94a6-a0a19948761e",
+			"name": "no token",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 4,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Should respond not allowed": true
+			},
+			"testPassFailCounts": {
+				"Should respond not allowed": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Should respond not allowed": true
+				}
+			]
+		},
+		{
+			"id": "e51e77b0-4833-482b-a5c5-aaff009baa06",
+			"name": "wrong token",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 3,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Should respond not allowed": true
+			},
+			"testPassFailCounts": {
+				"Should respond not allowed": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Should respond not allowed": true
+				}
+			]
+		},
+		{
+			"id": "8eb008b0-98f4-41f5-9bca-0e94a9e53661",
+			"name": "add one",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 13,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true
+				}
+			]
+		},
+		{
+			"id": "bea5be2e-a277-4e97-a6f2-2a37981bca07",
+			"name": "check if added correctly",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 1010,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should have 1 transaction": true,
+				"Should have data we sent": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have 1 transaction": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have data we sent": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1010
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should have 1 transaction": true,
+					"Should have data we sent": true
+				}
+			]
+		},
+		{
+			"id": "8cbe10d3-a962-435c-a83e-6c06acb77f00",
+			"name": "add another",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 13,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true
+				}
+			]
+		},
+		{
+			"id": "e1dcdda8-7e7a-418f-8009-d51148db5683",
+			"name": "check if added new one",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 1022,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should have 2 transactions": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have 2 transactions": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1022
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should have 2 transactions": true
+				}
+			]
+		},
+		{
+			"id": "8beb282f-1085-422a-885b-4f4f7e1bf93b",
+			"name": "update last transaction",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true
+				}
+			]
+		},
+		{
+			"id": "e0e288d9-011d-4618-a2b4-c82a7ce1b6cb",
+			"name": "check if updated correctly",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 1015,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should have data we updated": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have data we updated": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1015
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should have data we updated": true
+				}
+			]
+		},
+		{
+			"id": "34271c4a-014f-434a-9e31-7d235747a505",
+			"name": "delete transaction",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Should respond ok": true
+				}
+			]
+		},
+		{
+			"id": "11097d9d-766f-46be-bb7d-70519cf4d774",
+			"name": "check if deleted correctly",
+			"url": "http://localhost:5000/api/v1/transactions",
+			"time": 1017,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should have 1 transactions": true
+			},
+			"testPassFailCounts": {
+				"Should have 1 transactions": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1017
+			],
+			"allTests": [
+				{
+					"Should have 1 transactions": true
+				}
+			]
+		},
+		{
+			"id": "560e4082-f825-4dc8-ac81-b85811cd62a9",
+			"name": "delete user",
+			"url": "http://localhost:5000/api/v1/user",
+			"time": 19,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should respond ok": true,
+				"Should respond successful message": true
+			},
+			"testPassFailCounts": {
+				"Should respond ok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should respond successful message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				19
+			],
+			"allTests": [
+				{
+					"Should respond ok": true,
+					"Should respond successful message": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 4330,
+	"collection": {
+		"requests": [
+			{
+				"id": "d4711596-576e-4f93-8510-5aa2458074fb",
+				"method": "POST"
+			},
+			{
+				"id": "380b3b59-de57-44d7-8d5b-7b9c82c3262c",
+				"method": "POST"
+			},
+			{
+				"id": "7da51332-1177-43de-9f6d-b267e1f4781b",
+				"method": "POST"
+			},
+			{
+				"id": "6907dab2-5307-45ae-96d2-ebf506d6c632",
+				"method": "POST"
+			},
+			{
+				"id": "e1d2a47c-e0b4-4130-8b42-76bffb5e98fa",
+				"method": "POST"
+			},
+			{
+				"id": "26dab684-122f-4a59-94a6-a0a19948761e",
+				"method": "POST"
+			},
+			{
+				"id": "e51e77b0-4833-482b-a5c5-aaff009baa06",
+				"method": "POST"
+			},
+			{
+				"id": "8eb008b0-98f4-41f5-9bca-0e94a9e53661",
+				"method": "POST"
+			},
+			{
+				"id": "bea5be2e-a277-4e97-a6f2-2a37981bca07",
+				"method": "GET"
+			},
+			{
+				"id": "8cbe10d3-a962-435c-a83e-6c06acb77f00",
+				"method": "POST"
+			},
+			{
+				"id": "e1dcdda8-7e7a-418f-8009-d51148db5683",
+				"method": "GET"
+			},
+			{
+				"id": "8beb282f-1085-422a-885b-4f4f7e1bf93b",
+				"method": "PUT"
+			},
+			{
+				"id": "e0e288d9-011d-4618-a2b4-c82a7ce1b6cb",
+				"method": "GET"
+			},
+			{
+				"id": "34271c4a-014f-434a-9e31-7d235747a505",
+				"method": "DELETE"
+			},
+			{
+				"id": "11097d9d-766f-46be-bb7d-70519cf4d774",
+				"method": "GET"
+			},
+			{
+				"id": "560e4082-f825-4dc8-ac81-b85811cd62a9",
+				"method": "DELETE"
+			}
+		]
+	}
+}
